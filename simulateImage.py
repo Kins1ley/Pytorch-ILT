@@ -68,13 +68,13 @@ def expand_kernel(knx, kny, kernel, kernel_level):
 def compute_image(cmask, kernel, scale, workx, worky, dose, kernel_level):
     kernel_num = kernel_level
     cmask = shift(cmask)
-    cmask_fft = torch.fft.fft2(cmask, norm="forward")
+    cmask_fft = torch.fft.fft2(cmask)
     cmask_fft = shift(cmask_fft)
     mul_fft = torch.zeros(cmask_fft.size(), dtype=torch.float64)
     for i in range(kernel_num):
         temp = shift(kernel_mult(kernel_x, kernel_y, kernel[:, :, i], cmask_fft))
         # temp = torch.fft.ifft2(temp)
-        temp = shift(torch.fft.ifft2(temp, norm="forward"))
+        temp = shift(torch.fft.ifft2(temp))
         # print(torch.abs(temp).size())
         mul_fft += scale[i] * torch.pow(torch.abs(temp), 2)
     return mul_fft

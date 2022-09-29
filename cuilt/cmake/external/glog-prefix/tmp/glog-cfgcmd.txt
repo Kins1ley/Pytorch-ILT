@@ -1,0 +1,1 @@
+cmd='env;CXXFLAGS= -Wall -O2 -D_DEBUG -fPIC;/home/zhubinwu/L2ILT/cuilt/cmake/external/glog-prefix/src/glog/configure;--prefix=/home/zhubinwu/L2ILT/cuilt/cmake/external/glog-install;--enable-shared=no;--enable-static=yes;--with-gflags=/home/zhubinwu/L2ILT/cuilt/cmake/external/gflags-install/lib/..'

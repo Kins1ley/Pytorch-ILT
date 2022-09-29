@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package cuilt;
+
+message MosaicParameters {
+    int32 OPC_ITERATION_THRESHOLD = 1;
+}
