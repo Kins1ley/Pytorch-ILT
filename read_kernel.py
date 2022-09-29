@@ -5,47 +5,47 @@ import struct
 #     # print(int(i0), int(i1), int(i2), int(i3))
 #     return int(i3) + int(i2) * (16 ** 2) + int(i1) * (16 ** 4) + int(i0) * (16 ** 6)
 
-def read_kernel(flag_defocus):
-    if not flag_defocus:
-        fname = "cuilt/Kernels/M1OPC/scales.txt"
-    else:
-        fname = "cuilt/Kernels/M1OPC_def/scales.txt"
-    i = 0
-    with open(fname, "r") as f:
-        a = f.readlines()
-    scales = a[1:]
-    for i in range(len(scales)):
-        scales[i] = float(scales[i][:-1])
-    nk = int(a[0][:-1])
-    kernels = []
-    for i in range(nk):
-        kernel = []
-        if not flag_defocus:
-            fname = "cuilt/Kernels/M1OPC/fh" + str(i) + ".bin"
+class Kernel:
+
+    def __init__(self, knx, kny, flag_defocus):
+        self.knx = knx
+        self.kny = kny
+        self.knum = 0
+        self.flag_defocus = flag_defocus
+        self.scales = self.read_scales()
+        self.kernels = self.read_kernels()
+
+    def read_scales(self):
+        if not self.flag_defocus:
+            scale_file = "cuilt/Kernels/M1OPC/scales.txt"
         else:
-            fname = "cuilt/Kernels/M1OPC_def/fh" + str(i) + ".bin"
-        file = open(fname,"rb")
-        data = file.read()
-        # print(len(data[24:])//4)
-        # # file.seek(0, 0)
-        # print(data[:4])
-        # values = (data[3], data[2], data[1], data[0])
-        # packed_data = struct.pack("4B", *values)
-        # print(packed_data)
-        # data_raw = struct.unpack('i', packed_data)
-        # print(data_raw)
-        # break
-        print(len(data))
-        for j in range(5, len(data)//4-1):
-            values = (data[4*j+3], data[4*j+2], data[4*j+1], data[4*j])
-            encode_data = struct.pack("4B", *values)
-            # print(packed_data)
-            decode_data = struct.unpack('f', encode_data)
-            kernel.append(decode_data)
-        # print("*******kernel[1000], kernel[1001]*********")
-        # print(kernel[2450*15+1258], kernel[2450*15+1259])
-        kernels.append(kernel)
-    print(len(kernels))
-    print(kernels[15][1258], kernels[15][1259])
+            scale_file = "cuilt/Kernels/M1OPC_def/scales.txt"
+        with open(scale_file, "r") as f:
+            scales_content = f.readlines()
+        scales = [scale[:-1] for scale in scales_content[1:]]
+        print(scales)
+        self.knum = int(scales_content[0][:-1])
+        return scales
+
+    def read_kernels(self):
+        kernels = []
+        for i in range(self.knum):
+            kernel = []
+            if not self.flag_defocus:
+                binary_file = "cuilt/Kernels/M1OPC/fh" + str(i) + ".bin"
+            else:
+                binary_file = "cuilt/Kernels/M1OPC_def/fh" + str(i) + ".bin"
+            file = open(binary_file, "rb")
+            data = file.read()
+            for j in range(5, len(data)//4-1):
+                values = (data[4*j+3], data[4*j+2], data[4*j+1], data[4*j])
+                encode_data = struct.pack("4B", *values)
+                decode_data = struct.unpack('f', encode_data)
+                kernel.append(decode_data)
+            kernels.append(kernel)
+        print(kernels[15][1258], kernels[15][1259])
+
+        return kernels
+
 if __name__ == "__main__":
-    read_kernel(0)
+    kernel_focus = Kernel(35, 35, 0)
