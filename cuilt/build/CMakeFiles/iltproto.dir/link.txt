@@ -1,0 +1,2 @@
+/usr/bin/ar qc libiltproto.a  CMakeFiles/iltproto.dir/proto/cuilt.pb.cc.o
+/usr/bin/ranlib libiltproto.a
