@@ -825,8 +825,22 @@ void initialComboKernel()
                 }
             comboOptKernels[type + 2][layer] = kernelComboCT;
         }
+    
     printf("%d Combo kernel loaded\n", nk);
-    //print
+    
+    /* test my combo kernel implementation!!!
+    printf("*******************************************\n");
+    fprintf(stdout, "%f", comboOptKernels[3][0]->krn[(35*13+12)*2]);
+    fprintf(stdout, "%f\n", comboOptKernels[3][0]->krn[(35*13+12)*2+1]);
+    fprintf(stdout, "%f", comboOptKernels[3][0]->krn[(35*13+15)*2]);
+    fprintf(stdout, "%f\n", comboOptKernels[3][0]->krn[(35*13+15)*2+1]);
+    fprintf(stdout, "%f", comboOptKernels[3][0]->krn[(35*14+13)*2]);
+    fprintf(stdout, "%f\n", comboOptKernels[3][0]->krn[(35*14+13)*2+1]);
+    fprintf(stdout, "%f", comboOptKernels[3][0]->krn[(35*16+17)*2]);
+    fprintf(stdout, "%f\n", comboOptKernels[3][0]->krn[(35*16+17)*2+1]);
+    */    
+
+
     //    FILE* filekr = fopen("combokr", "w");
     //    FILE* fileki = fopen("comboki", "w");
     //    kernel = comboOptKernels[0][0];
@@ -974,8 +988,22 @@ void initSimulate()
                                                  //    nky = kernel[i]->nky;F
     }
     fprintf(stdout, "*******kernel[1000], kernel[1001]*********\n");
-    fprintf(stdout, "%f", kernel[0]->krn[2450*15+1258]);
-    fprintf(stdout, "%f\n", kernel[0]->krn[2450*15+1259]);
+    /* 测试我的python版本代码
+    fprintf(stdout, "%f", kernel[0]->krn[(1225*0+35*13+12)*2]);
+    fprintf(stdout, "%f\n", kernel[0]->krn[(1225*0+35*13+12)*2+1]);
+    fprintf(stdout, "%f", kernel[0]->krn[(1225*1+35*13+12)*2]);
+    fprintf(stdout, "%f\n", kernel[0]->krn[(1225*1+35*13+12)*2+1]);
+    fprintf(stdout, "%f", kernel[0]->krn[(1225*2+35*13+12)*2]);
+    fprintf(stdout, "%f\n", kernel[0]->krn[(1225*2+35*13+12)*2+1]);
+    fprintf(stdout, "%f", kernel[0]->krn[(1225*3+35*13+12)*2]);
+    fprintf(stdout, "%f\n", kernel[0]->krn[(1225*3+35*13+12)*2+1]);
+    fprintf(stdout, "%f", kernel[0]->krn[(1225*4+35*13+12)*2]);
+    fprintf(stdout, "%f\n", kernel[0]->krn[(1225*4+35*13+12)*2+1]);
+    fprintf(stdout, "%f", kernel[0]->krn[(1225*5+35*13+12)*2]);
+    fprintf(stdout, "%f\n", kernel[0]->krn[(1225*5+35*13+12)*2+1]);
+    fprintf(stdout, "%f", kernel[0]->krn[(1225*23+35*13+12)*2]);
+    fprintf(stdout, "%f\n", kernel[0]->krn[(1225*23+35*13+12)*2+1]);
+    */
     fprintf(stderr, "*Message*: received focus kernel data\n");
 
     //Load kernels for defocus

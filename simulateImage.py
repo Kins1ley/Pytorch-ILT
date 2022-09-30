@@ -79,7 +79,7 @@ def compute_image(cmask, kernel, scale, workx, worky, dose, kernel_level):
         mul_fft += scale[i] * torch.pow(torch.abs(temp), 2)
     return mul_fft
 
-
+#用dose作用mask
 def mask_float(mask, dose):
     return (dose * mask).to(torch.complex64)
 
@@ -90,17 +90,7 @@ def simulate_image(mask, kernel, scale, kernel_type, dose, kernel_level):
     #     kernel = torch.randn((kernel_x, kernel_y, kernel_num), dtype=torch.complex64)
     #     scale = torch.randn((kernel_num,), dtype=torch.float64)
     cmask = mask_float(mask, dose)
-    # start = time.time()
-    # image1 = compute_image1(cmask, kernel, scale, 0, 0, dose, kernel_level)
-    # end = time.time()
-    # print(end-start)
-
-    # start = time.time()
     image = compute_image(cmask, kernel, scale, 0, 0, dose, kernel_level)
-    # end = time.time()
-    # print(image1)
-    # print(image2)
-    # print(end-start)
     return image
 
 
@@ -109,7 +99,6 @@ if __name__ == "__main__":
     mask = torch.randn((imx, imy), dtype=torch.float64)
     kernel = torch.randn((kernel_x, kernel_y, kernel_num), dtype=torch.complex64)
     scale = torch.randn((kernel_num,), dtype=torch.float64)
-    # kernel_types = [""]
     dose = 1.0
     kernel_level = 15
     output = simulate_image(mask, kernel, scale, 0, dose, kernel_level)
