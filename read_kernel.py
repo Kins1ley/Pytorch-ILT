@@ -1,5 +1,5 @@
 import struct
-
+import torch
 
 # def hex2int(i0, i1, i2, i3):
 #     # print(int(i0), int(i1), int(i2), int(i3))
@@ -22,10 +22,12 @@ class Kernel:
             scale_file = "cuilt/Kernels/M1OPC_def/scales.txt"
         with open(scale_file, "r") as f:
             scales_content = f.readlines()
-        scales = [scale[:-1] for scale in scales_content[1:]]
+        scales = [float(scale[:-1]) for scale in scales_content[1:]]
         print(scales)
         self.knum = int(scales_content[0][:-1])
-        return scales
+        temp = torch.tensor(scales, dtype=torch.float64)
+        print(temp)
+        return temp
 
     def read_kernels(self):
         kernels = []
@@ -43,9 +45,9 @@ class Kernel:
                 decode_data = struct.unpack('f', encode_data)
                 kernel.append(decode_data)
             kernels.append(kernel)
-        print(kernels[15][1258], kernels[15][1259])
+        # print(kernels[15][1258], kernels[15][1259])
 
-        return kernels
+        return torch.tensor(kernels, dtype=torch.float64)
 
 if __name__ == "__main__":
     kernel_focus = Kernel(35, 35, 0)
