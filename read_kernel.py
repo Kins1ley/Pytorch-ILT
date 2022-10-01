@@ -11,9 +11,9 @@ class Kernel(object):
         self.flag_defocus = defocus
         self.conjuncture = conjuncture
         self.combo = combo
-        #other kernel-related variables
-        self.knum = 0 # kernel number, if combo = 0, knum = 24, else, knum = 1
-        self.combo_num = 0  #the number of combined kernels, if combo = 0, combo_num = 0, else, combo_num = 9
+        # other kernel-related variables
+        self.knum = 0  # kernel number, if combo = 0, knum = 24, else, knum = 1
+        self.combo_num = 0  # the number of combined kernels, if combo = 0, combo_num = 0, else, combo_num = 9
         self.scales = self.read_scales()
 
         if not self.conjuncture:
@@ -39,7 +39,7 @@ class Kernel(object):
         return temp
 
     def byte2float(self, bytes):
-        encode_data = struct.pack("4B", *bytes)     #按照unsigned char*打包四个字节
+        encode_data = struct.pack("4B", *bytes)     # 按照unsigned char*打包四个字节
         decode_data = struct.unpack('f', encode_data)
         return decode_data
 
@@ -55,12 +55,12 @@ class Kernel(object):
             data = file.read()
             # print(len(data)//4)
             for j in range(5, len(data)//4-1, 2):
-                real_values = self.byte2float((data[4*j+3], data[4*j+2], data[4*j+1], data[4*j]))   #逆排序是为了实现高位寻址->低位寻址
+                real_values = self.byte2float((data[4*j+3], data[4*j+2], data[4*j+1], data[4*j]))   # 逆排序是为了实现高位寻址->低位寻址
                 imag_values = self.byte2float((data[4*j+7], data[4*j+6], data[4*j+5], data[4*j+4]))
                 kernel.append(torch.tensor([real_values[0] + 1j*imag_values[0]], dtype=torch.complex64))
             kernels.append(kernel)
         kernels = torch.tensor(kernels, dtype=torch.complex64)
-        kernels = (kernels.view((24, 35, 35))).permute(1,2,0)
+        kernels = (kernels.view((24, 35, 35))).permute(1, 2, 0)
         return kernels
 
     def combo_kernel(self):
@@ -70,8 +70,9 @@ class Kernel(object):
         self.scales = torch.tensor([1], dtype=torch.float64)
         combo_kernel = torch.zeros([self.knx, self.kny, self.knum], dtype=torch.complex64).to(device)
         for i in range(self.combo_num):
-            combo_kernel[:,:,0] += scales[i] * self.kernels[:,:,i]
+            combo_kernel[:, :, 0] += scales[i] * self.kernels[:, :, i]
         self.kernels = combo_kernel
+
 
 if __name__ == "__main__":
     torch.set_printoptions(precision=6)
@@ -79,8 +80,6 @@ if __name__ == "__main__":
     defocus_flag = 1
     conjuncture_flag = 1
     combo_flag = 1
-    # kernel_defocus = Kernel(35, 35, 1)
-    # kernels = kernel_focus.kernels
     opt_kernels = {"focus": Kernel(35, 35, device), "defocus": Kernel(35, 35, device, defocus=defocus_flag),
                   "CT focus": Kernel(35, 35, device, conjuncture=conjuncture_flag),
                   "CT defocus": Kernel(35, 35, device, defocus=defocus_flag, conjuncture=conjuncture_flag)}
@@ -99,11 +98,12 @@ if __name__ == "__main__":
     # print(kernels[13, 12, 4])
     # print(kernels[13, 12, 5])
     # print(kernels[13, 12, 23])
-    combo_kernel_focus = combo_kernels["combo CT defocus"]
-    kernels = combo_kernel_focus.kernels
-    print(kernels.size())
-    print(kernels[13, 12])
-    print(kernels[13, 15])
-    print(kernels[14, 13])
-    print(kernels[16, 17])
-    print(kernels.device)
+    # combo_kernel_focus = combo_kernels["combo CT defocus"]
+    # kernels = combo_kernel_focus.kernels
+    # print(kernels.size())
+    # print(kernels[13, 12])
+    # print(kernels[13, 15])
+    # print(kernels[14, 13])
+    # print(kernels[16, 17])
+    # print(kernels.device)
+
