@@ -20,8 +20,8 @@ class Design(object):
         self.parse()
         self.polygon2rect()
 
-    def add_rect(self, llx, lly, urx, ury):
-        self.m_rects.append(Rect(llx, lly, urx, ury))
+    def add_rect(self, rect):
+        self.m_rects.append(rect)
 
     def add_polygon(self):
         self.m_polygons.append(Polygon())
@@ -64,7 +64,7 @@ class Design(object):
                         height = int(file[i+6+key_index])
                         i += 7
                         index += 7
-                        self.add_rect(llx, lly, llx+width, lly+height)
+                        self.add_rect(Rect(llx, lly, llx+width, lly+height))
                     elif key_token == "PGON":
                         orient = file[i+1+key_index]
                         layer = file[i+2+key_index]
@@ -75,8 +75,8 @@ class Design(object):
                             head = file[i+key_index]
                             if head is not None:
                                 if head[0].isdigit():
-                                    point_x = file[i+key_index]
-                                    point_y = file[i+1+key_index]
+                                    point_x = int(file[i+key_index])
+                                    point_y = int(file[i+1+key_index])
                                     self.m_polygons[-1].add_point(point_x, point_y)
                                     i += 2
                                     index += 2
@@ -110,15 +110,28 @@ class Design(object):
         return process_contents
 
     def polygon2rect(self):
-        pass
+        m_num_true_rects = len(self.m_rects)
+        for i in range(len(self.m_polygons)):
+            rects = self.m_polygons[i].convert_rect()
+            for j in range(len(rects)):
+                self.add_rect(rects[j])
+
+    def test_parser(self):
+        for rect in range(len(self.m_rects)):
+            self.m_mask_rects.append(rect)
+
+    def write_glp(self, output_file):
+        with open(output_file, 'w') as f:
+            f.write("BEGIN\n")
+            f.write("EQUIV {} {} {} +X,+Y\n".format(self.m_scale_numerator, self.m_scale_denominator, self.m_unit))
+            f.write("CNAME {}\n".format(self.m_cell_name))
+            f.write("LEVEL M1OPC\n\n")
+            for mask_rect in self.m_mask_rects:
+                f.write("   RECT N M1OPC ")
+                f.write(str(mask_rect))
+            f.write("ENDMSG\n")
 
 
 if __name__ == "__main__":
 
     test_design = Design("M1_test1.glp")
-    for rect in test_design.m_rects:
-        print(rect)
-
-    for polygon in test_design.m_polygons:
-        print(polygon)
-    print(test_design.m_scale_denominator, test_design.m_scale_numerator, test_design.m_unit, test_design.m_cell_name, test_design.m_layer)

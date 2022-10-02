@@ -1,8 +1,0 @@
-
-cmake_minimum_required(VERSION 3.9)
-
-#project(pvbandsim)
-file(GLOB PVBANDSIM_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
-set(PROJECT_SOURCES "${PROJECT_SOURCES};${PVBANDSIM_SOURCES}" PARENT_SCOPE)
-#set(CMAKE_CXX_STANDARD 11)
-#add_library(pvbandsim ${PVBANDSIM_SOURCES})

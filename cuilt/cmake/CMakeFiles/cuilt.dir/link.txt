@@ -1,1 +1,0 @@
-/usr/bin/c++   -Wall -O2 -D_DEBUG   CMakeFiles/cuilt.dir/main.cpp.o  -o cuilt  -Wl,-rpath,/home/zhubinwu/L2ILT/cuilt/cmake: liblibcuilt.so libiltproto.a /usr/lib/x86_64-linux-gnu/libgflags.so /usr/lib/x86_64-linux-gnu/libglog.so /usr/lib/x86_64-linux-gnu/libprotobuf.so -lpthread 

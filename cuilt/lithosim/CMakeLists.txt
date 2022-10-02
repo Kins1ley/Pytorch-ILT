@@ -1,7 +1,0 @@
-
-cmake_minimum_required(VERSION 3.9)
-
-file(GLOB LITHOSIM_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
-set(PROJECT_SOURCES "${PROJECT_SOURCES};${LITHOSIM_SOURCES}" PARENT_SCOPE)
-
-#add_subdirectory(pvbandsim)

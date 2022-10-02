@@ -1,3 +1,4 @@
+
 class Coordinate(object):
 
     def __init__(self, coordx, coordy):
@@ -50,15 +51,23 @@ class Polygon(object):
         v_level = set()
         num_pt = len(self.m_points)
         from_pt = self.m_points[-1]
+        # for p in self.m_points:
+        #     print(p)
+
         for i in range(num_pt):
             to_pt = self.m_points[i]
             if from_pt.x == to_pt.x:
                 v_level.add(from_pt.x)
+                # print(from_pt.x)
             elif from_pt.y == to_pt.y:
                 h_level.add(from_pt.y)
+                # print(from_pt.y)
             else:
-                print("diagonal edge in polygan\n")
+                print("diagonal edge in polygon\n")
             from_pt = to_pt
+        #
+        h_level = sorted(h_level)
+        v_level = sorted(v_level)
 
         for i in range(len(v_level) - 1):
             v_it = list(v_level)[i]
@@ -75,6 +84,9 @@ class Polygon(object):
                     assert (corner1.x < corner2.x) and (corner1.y < corner2.y)
                     rect = Rect(corner1.x, corner1.y, corner2.x, corner2.y)
                     self.m_convertedRects.append(rect)
+
+        for t in self.m_convertedRects:
+            print(t)
 
         return self.m_convertedRects
 
