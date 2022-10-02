@@ -46,6 +46,10 @@ class Polygon(object):
         string += "\n"
         return string
 
+    @property
+    def get_points(self):
+        return self.m_points
+
     def convert_rect(self):
         h_level = set()
         v_level = set()
