@@ -1,4 +1,4 @@
-from shape import Rect, Polygon
+from .shape import Rect, Polygon
 
 
 class Design(object):
@@ -20,6 +20,26 @@ class Design(object):
         self.parse()
         self.polygon2rect()
 
+    @property
+    def get_rects(self):
+        return self.m_rects
+
+    @property
+    def get_polygons(self):
+        return self.m_polygons
+
+    @property
+    def get_mask_rects(self):
+        return self.m_mask_rects
+
+    @property
+    def get_num_true_rects(self):
+        return self.m_num_true_rects
+
+    @property
+    def get_layout_file(self):
+        return self.m_layout_file
+
     def add_rect(self, rect):
         self.m_rects.append(rect)
 
@@ -28,7 +48,7 @@ class Design(object):
 
     def parse(self):
         file = self.file_content()
-        print(len(file))
+        # print(len(file))
         index = 0
         while index < len(file):
             token = file[index]
@@ -134,4 +154,4 @@ class Design(object):
 
 if __name__ == "__main__":
 
-    test_design = Design("M1_test1.glp")
+    test_design = Design("../benchmarks/M1_test1.glp")

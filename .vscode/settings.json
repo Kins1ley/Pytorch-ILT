@@ -3,6 +3,8 @@
         "vector": "cpp",
         "typeinfo": "cpp",
         "istream": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp"
     }
 }

@@ -6,7 +6,7 @@ class Coordinate(object):
         self.y = coordy
 
     def __str__(self):
-        return str("{x} {y} ".format(x=str(self.x), y=str(self.y)))
+        return str("{} {} ".format(str(self.x), str(self.y)))
 
 
 class Rect(object):
@@ -24,9 +24,9 @@ class Rect(object):
         return self.m_ur
 
     def __str__(self):
-        return str("{ll}{length} {width}\n".
-                   format(ll=str(self.m_ll), length=str(self.m_ur.x - self.m_ll.x),
-                          width=str(self.m_ur.y - self.m_ll.y)))
+        return str("{}{} {}\n".
+                   format(str(self.m_ll), str(self.m_ur.x - self.m_ll.x),
+                          str(self.m_ur.y - self.m_ll.y)))
 
 
 class Polygon(object):
@@ -85,8 +85,8 @@ class Polygon(object):
                     rect = Rect(corner1.x, corner1.y, corner2.x, corner2.y)
                     self.m_convertedRects.append(rect)
 
-        for t in self.m_convertedRects:
-            print(t)
+        # for t in self.m_convertedRects:
+        #     print(t)
 
         return self.m_convertedRects
 
