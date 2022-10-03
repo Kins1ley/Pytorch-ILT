@@ -47,7 +47,7 @@ class Polygon(object):
         return string
 
     @property
-    def get_points(self):
+    def points(self):
         return self.m_points
 
     def convert_rect(self):

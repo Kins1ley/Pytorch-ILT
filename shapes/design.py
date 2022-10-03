@@ -1,4 +1,4 @@
-from .shape import Rect, Polygon
+from shapes import Rect, Polygon
 
 
 class Design(object):
@@ -21,23 +21,23 @@ class Design(object):
         self.polygon2rect()
 
     @property
-    def get_rects(self):
+    def rects(self):
         return self.m_rects
 
     @property
-    def get_polygons(self):
+    def polygons(self):
         return self.m_polygons
 
     @property
-    def get_mask_rects(self):
+    def mask_rects(self):
         return self.m_mask_rects
 
     @property
-    def get_num_true_rects(self):
+    def num_true_rects(self):
         return self.m_num_true_rects
 
     @property
-    def get_layout_file(self):
+    def layout_file(self):
         return self.m_layout_file
 
     def add_rect(self, rect):
@@ -130,7 +130,7 @@ class Design(object):
         return process_contents
 
     def polygon2rect(self):
-        m_num_true_rects = len(self.m_rects)
+        self.m_num_true_rects = len(self.m_rects)
         for i in range(len(self.m_polygons)):
             rects = self.m_polygons[i].convert_rect()
             for j in range(len(rects)):

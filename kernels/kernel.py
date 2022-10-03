@@ -7,7 +7,7 @@ class Kernel(object):
     def __init__(self, knx, kny, device, defocus=0, conjuncture=0, combo=0):
         self.knx = knx
         self.kny = kny
-        self.device = device
+        # self.device = device
         self.flag_defocus = defocus
         self.conjuncture = conjuncture
         self.combo = combo
@@ -17,18 +17,18 @@ class Kernel(object):
         self.scales = self.read_scales()
 
         if not self.conjuncture:
-            self.kernels = self.read_kernels().to(self.device)
+            self.kernels = self.read_kernels().to(device)
         else:
-            self.kernels = torch.conj(self.read_kernels().transpose(0, 1)).to(self.device)
+            self.kernels = torch.conj(self.read_kernels().transpose(0, 1)).to(device)
 
         if self.combo:
             self.combo_kernel()
 
     def read_scales(self):
         if not self.flag_defocus:
-            scale_file = "./M1OPC/scales.txt"
+            scale_file = "./kernels/M1OPC/scales.txt"
         else:
-            scale_file = "./M1OPC_def/scales.txt"
+            scale_file = "./kernels/M1OPC_def/scales.txt"
         with open(scale_file, "r") as f:
             scales_content = f.readlines()
         scales = [float(scale[:-1]) for scale in scales_content[1:]]
@@ -48,9 +48,9 @@ class Kernel(object):
         for i in range(self.knum):
             kernel = []
             if not self.flag_defocus:
-                binary_file = "./M1OPC/fh" + str(i) + ".bin"
+                binary_file = "./kernels/M1OPC/fh" + str(i) + ".bin"
             else:
-                binary_file = "./M1OPC_def/fh" + str(i) + ".bin"
+                binary_file = "./kernels/M1OPC_def/fh" + str(i) + ".bin"
             file = open(binary_file, "rb")
             data = file.read()
             # print(len(data)//4)
@@ -75,6 +75,9 @@ class Kernel(object):
 
 
 if __name__ == "__main__":
+    # import os
+    # pwd = os.getcwd()
+    # print(pwd)
     torch.set_printoptions(precision=6)
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     defocus_flag = 1
