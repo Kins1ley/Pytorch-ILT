@@ -64,10 +64,10 @@ class Sraf(object):
                 #         self.m_mask[j, i] = 1
 
     def add_sraf(self):
-        # todo: test the correctness
         rects = self.m_design.rects
         # orient = {"HORIZONTAL": 0, "VERTICAL":1}
-        for rect in rects:
+        for i in range(self.m_design.num_true_rects):
+            rect = rects[i]
             llx = rect.ll.x + LITHOSIM_OFFSET
             lly = rect.ll.y + LITHOSIM_OFFSET
             urx = rect.ur.x + LITHOSIM_OFFSET
