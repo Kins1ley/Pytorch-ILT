@@ -1,5 +1,5 @@
 .idea/
-tutorial/pytorch-tutorial/
+tutorials/pytorch-tutorial/
 cuilt/
 ilt/init_target
 ilt/init_hammer_mask
