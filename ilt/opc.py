@@ -147,7 +147,7 @@ if __name__ == "__main__":
     start = time.time()
     test_opc.run()
     end = time.time()
-    print(end-start)
+    # print(end-start)
     # plt.imshow(test_opc.m_mask)
     # # plt.show()
     # plt.savefig('add_sraf_mask' + str(i) + '.png')
