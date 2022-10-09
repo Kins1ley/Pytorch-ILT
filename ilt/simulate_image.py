@@ -83,7 +83,6 @@ def compute_image(cmask, kernel, scale, workx, worky, dose, kernel_level):
 def mask_float(mask, dose):
     return (dose * mask).to(torch.complex64)
 
-
 def simulate_image(mask, kernel, scale, kernel_type, dose, kernel_level):
     # if kernel_type == 0:
     #     kernel = torch.randn((kernel_x, kernel_y, kernel_num), dtype=torch.complex64)
