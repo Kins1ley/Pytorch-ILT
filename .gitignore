@@ -1,6 +1,7 @@
 .idea/
-tutorial/pytorch-tutorial/
+tutorials/pytorch-tutorial/
 cuilt/
-ilt/init_target/
-ilt/init_hammer_mask/
-ilt/init_add_sraf_mask/
+ilt/init_target
+ilt/init_hammer_mask
+ilt/init_add_sraf_mask
+ilt/*.png

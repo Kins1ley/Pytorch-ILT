@@ -1,6 +1,5 @@
 from shapes import Rect, Polygon
 
-
 class Design(object):
 
     def __init__(self, layout_file):

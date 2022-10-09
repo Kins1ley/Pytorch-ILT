@@ -1,6 +1,6 @@
 import struct
 import torch
-
+import os
 
 class Kernel(object):
 
@@ -26,9 +26,9 @@ class Kernel(object):
 
     def read_scales(self):
         if not self.flag_defocus:
-            scale_file = "./kernels/M1OPC/scales.txt"
+            scale_file = "../kernels/M1OPC/scales.txt"
         else:
-            scale_file = "./kernels/M1OPC_def/scales.txt"
+            scale_file = "../kernels/M1OPC_def/scales.txt"
         with open(scale_file, "r") as f:
             scales_content = f.readlines()
         scales = [float(scale[:-1]) for scale in scales_content[1:]]
@@ -48,9 +48,9 @@ class Kernel(object):
         for i in range(self.knum):
             kernel = []
             if not self.flag_defocus:
-                binary_file = "./kernels/M1OPC/fh" + str(i) + ".bin"
+                binary_file = "../kernels/M1OPC/fh" + str(i) + ".bin"
             else:
-                binary_file = "./kernels/M1OPC_def/fh" + str(i) + ".bin"
+                binary_file = "../kernels/M1OPC_def/fh" + str(i) + ".bin"
             file = open(binary_file, "rb")
             data = file.read()
             # print(len(data)//4)
@@ -92,8 +92,8 @@ if __name__ == "__main__":
                      "combo CT focus": Kernel(35, 35, device, conjuncture=conjuncture_flag, combo=combo_flag),
                      "combo CT defocus": Kernel(35, 35, device, defocus=defocus_flag, conjuncture=conjuncture_flag, combo=combo_flag)}
     # 已经测试了如下kernel数值和c++版本的都对的上
-    kernel_focus = opt_kernels["focus"]
-    kernels = kernel_focus.kernels
+    kernel_defocus = opt_kernels["defocus"]
+    kernels = kernel_defocus.kernels
     print(kernels[13, 12, 0])
     print(kernels[13, 12, 1])
     print(kernels[13, 12, 2])
