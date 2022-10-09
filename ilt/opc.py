@@ -3,11 +3,14 @@ sys.path.append("..")
 import torch
 import matplotlib
 import matplotlib.pyplot as plt
+import time
+
 from shapes import Design
 from shapes import Rect, Polygon
 from constant import OPC_TILE_X, OPC_TILE_Y
 from constant import MASK_TILE_END_X, MASK_TILE_END_Y, MASKRELAX_SIGMOID_STEEPNESS, MASK_PRINTABLE_THRESHOLD
 from constant import LITHOSIM_OFFSET
+from constant import OPC_INITIAL_STEP_SIZE, OPC_JUMP_STEP_SIZE, GRADIENT_DESCENT_BETA
 from constant import ZERO_ERROR, WEIGHT_EPE_REGION
 from hammer import Hammer
 from sraf import Sraf
@@ -34,6 +37,9 @@ class OPC(object):
         self.m_epe_cheker = EpeChecker()
         self.m_epe_cheker.set_design(self.m_design)
         self.m_epe_weight = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
+        self.m_epe_samples = None
+        # step size
+        self.m_step_size = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
 
     def rect2matrix(self, origin_x, origin_y):
         rects = self.m_design.rects
@@ -75,12 +81,7 @@ class OPC(object):
         self.initialize_params()
         self.update_mask()
         self.determine_epe_weight()
-        # print(end-start)
-        # for i in range(2048):
-        #     for j in range(2048):
-        #         if self.m_epe_weight[i, j] == 1:
-        #             print(i*2048+j)
-
+        self.m_epe_samples = self.m_epe_cheker.find_sample_point()
 
     def initialize_mask(self):
         self.m_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = \
@@ -130,16 +131,17 @@ class OPC(object):
             #         if temp[y, x] < ZERO_ERROR:
             #             temp[y, x] = 0.5
             # print(self.m_epe_weight.equal(temp))
+
         elif num_iteration == 5:
             self.m_epe_weight[:, :] = 1
             # for y in range(OPC_TILE_Y):
             #     for x in range(OPC_TILE_X):
             #         self.m_epe_weight[y, x] = 1
 
-
+    def determine_const_step_size(self, num_iteration):
+        self.m_step_size[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = OPC_INITIAL_STEP_SIZE
 
 if __name__ == "__main__":
-    import time
     # matplotlib.use('TkAgg')
     # for i in range(1, 11):
     test_design = Design("../benchmarks/M1_test1" + ".glp")
@@ -147,7 +149,7 @@ if __name__ == "__main__":
     start = time.time()
     test_opc.run()
     end = time.time()
-    # print(end-start)
+    print(end-start)
     # plt.imshow(test_opc.m_mask)
     # # plt.show()
     # plt.savefig('add_sraf_mask' + str(i) + '.png')
