@@ -12,6 +12,7 @@ from constant import MASK_TILE_END_X, MASK_TILE_END_Y, MASKRELAX_SIGMOID_STEEPNE
 from constant import LITHOSIM_OFFSET
 from constant import OPC_INITIAL_STEP_SIZE, OPC_JUMP_STEP_SIZE, GRADIENT_DESCENT_BETA
 from constant import ZERO_ERROR, WEIGHT_EPE_REGION
+from constant import device
 from hammer import Hammer
 from sraf import Sraf
 from utils import is_pixel_on
@@ -27,19 +28,19 @@ class OPC(object):
         self.m_sraf = sraf
         # self.m_minObjValue = sys.float_info.max
         # self.m_numFinalIteration = OPC_ITERATION_THRESHOLD
-        self.m_targetImage = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
+        self.m_targetImage = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
         # M matrix
-        self.m_mask = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
+        self.m_mask = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
         # P matrix
-        self.m_params = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
+        self.m_params = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
 
         # EPE checker setting
-        self.m_epe_cheker = EpeChecker()
+        self.m_epe_cheker = EpeChecker(device)
         self.m_epe_cheker.set_design(self.m_design)
-        self.m_epe_weight = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
+        self.m_epe_weight = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
         self.m_epe_samples = None
         # step size
-        self.m_step_size = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
+        self.m_step_size = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
 
     def rect2matrix(self, origin_x, origin_y):
         rects = self.m_design.rects

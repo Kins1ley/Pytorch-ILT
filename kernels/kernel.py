@@ -92,8 +92,8 @@ if __name__ == "__main__":
                      "combo CT focus": Kernel(35, 35, device, conjuncture=conjuncture_flag, combo=combo_flag),
                      "combo CT defocus": Kernel(35, 35, device, defocus=defocus_flag, conjuncture=conjuncture_flag, combo=combo_flag)}
     # 已经测试了如下kernel数值和c++版本的都对的上
-    kernel_focus = opt_kernels["focus"]
-    kernels = kernel_focus.kernels
+    kernel_defocus = opt_kernels["defocus"]
+    kernels = kernel_defocus.kernels
     print(kernels[13, 12, 0])
     print(kernels[13, 12, 1])
     print(kernels[13, 12, 2])

@@ -8,13 +8,13 @@ from shapes import Coordinate, Polygon
 class EpeChecker(object):
     orient_t = {"HORIZONTAL": 0, "VERTICAL": 1}
     direction_t = {"UP": 0, "DOWN": 1, "LEFT": 2, "RIGHT": 3}
-    def __init__(self):
+    def __init__(self, device):
         self.m_valid = False
         self.m_num_epe_in = 0
         self.m_num_epe_out = 0
         self.m_polygons = None
         self.m_num_true_polygons = 0
-        self.m_bimage = torch.zeros([EPE_TILE_Y, EPE_TILE_X])
+        self.m_bimage = torch.zeros([EPE_TILE_Y, EPE_TILE_X], dtype=torch.int64, device=device)
         self.m_samples = []
 
     def set_design(self, design):

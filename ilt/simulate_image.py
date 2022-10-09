@@ -1,5 +1,6 @@
 import torch
 import time
+from constant import device
 
 imx = 2048
 imy = 2048
@@ -9,7 +10,7 @@ kernel_y = 35
 
 
 def shift(cmask):
-    shift_cmask = torch.zeros(cmask.size(), dtype=torch.complex64)
+    shift_cmask = torch.zeros(cmask.size(), dtype=torch.complex64, device=device)
     shift_cmask[:imx//2, :imy//2] = cmask[imx//2:, imy//2:]     # 1 = 4
     shift_cmask[:imx//2, imy//2:] = cmask[imx//2:, :imy//2]     # 2 = 3
     shift_cmask[imx//2:, :imy//2] = cmask[:imx//2, imy//2:]     # 3 = 2
@@ -22,7 +23,7 @@ def kernel_mult(knx, kny, kernel, mask_fft):
     imxy = imy//2
     xoff = imxh - knx//2
     yoff = imxy - kny//2
-    output = torch.zeros(mask_fft.size(), dtype=torch.complex64)
+    output = torch.zeros(mask_fft.size(), dtype=torch.complex64, device=device)
     output[xoff:xoff+knx, yoff:yoff+kny] = torch.mul(kernel, mask_fft[xoff:xoff+knx, yoff:yoff+kny])
     return output
 
@@ -32,7 +33,7 @@ def expand_kernel(knx, kny, kernel, kernel_level):
     imxy = imy//2
     xoff = imxh - knx//2
     yoff = imxy - kny//2
-    kernel_expand = torch.zeros((imx, imy, kernel_level), dtype=torch.complex64)
+    kernel_expand = torch.zeros((imx, imy, kernel_level), dtype=torch.complex64, device=device)
     kernel_expand[xoff:xoff+knx, yoff:yoff+kny, :] = kernel
     return kernel_expand
 
@@ -70,7 +71,7 @@ def compute_image(cmask, kernel, scale, workx, worky, dose, kernel_level):
     cmask = shift(cmask)
     cmask_fft = torch.fft.fft2(cmask)
     cmask_fft = shift(cmask_fft)
-    mul_fft = torch.zeros(cmask_fft.size(), dtype=torch.float64)
+    mul_fft = torch.zeros(cmask_fft.size(), dtype=torch.float64, device=device)
     for i in range(kernel_num):
         temp = shift(kernel_mult(kernel_x, kernel_y, kernel[:, :, i], cmask_fft))
         # temp = torch.fft.ifft2(temp)
@@ -83,7 +84,7 @@ def compute_image(cmask, kernel, scale, workx, worky, dose, kernel_level):
 def mask_float(mask, dose):
     return (dose * mask).to(torch.complex64)
 
-def simulate_image(mask, kernel, scale, kernel_type, dose, kernel_level):
+def simulate_image(mask, kernel, scale, dose, kernel_level):
     # if kernel_type == 0:
     #     kernel = torch.randn((kernel_x, kernel_y, kernel_num), dtype=torch.complex64)
     #     scale = torch.randn((kernel_num,), dtype=torch.float64)
@@ -99,7 +100,10 @@ if __name__ == "__main__":
     scale = torch.randn((kernel_num,), dtype=torch.float64)
     dose = 1.0
     kernel_level = 15   #kernel数目
-    output = simulate_image(mask, kernel, scale, 0, dose, kernel_level)
-    print(output)
+    start = time.time()
+    output = simulate_image(mask, kernel, scale, dose, kernel_level)
+    end = time.time()
+    print(end-start)
+    # print(output)
     # print((output1 == output2).all())
     # print(output)
