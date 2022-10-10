@@ -60,7 +60,7 @@ class Kernel(object):
                 kernel.append(torch.tensor([real_values[0] + 1j*imag_values[0]], dtype=torch.complex128))
             kernels.append(kernel)
         kernels = torch.tensor(kernels, dtype=torch.complex128)
-        kernels = (kernels.view((24, 35, 35))).permute(1, 2, 0)
+        kernels = (kernels.view((24, 35, 35))).permute(2, 1, 0)
         return kernels
 
     def combo_kernel(self):
@@ -94,13 +94,13 @@ if __name__ == "__main__":
     # 已经测试了如下kernel数值和c++版本的都对的上
     kernel_defocus = opt_kernels["defocus"]
     kernels = kernel_defocus.kernels
-    print(kernels[13, 12, 0])
-    print(kernels[13, 12, 1])
-    print(kernels[13, 12, 2])
-    print(kernels[13, 12, 3])
-    print(kernels[13, 12, 4])
-    print(kernels[13, 12, 5])
-    print(kernels[13, 12, 23])
+    # print(kernels[13, 12, 0])
+    # print(kernels[13, 12, 1])
+    # print(kernels[13, 12, 2])
+    # print(kernels[13, 12, 3])
+    # print(kernels[13, 12, 4])
+    # print(kernels[13, 12, 5])
+    # print(kernels[13, 12, 23])
     # combo_kernel_focus = combo_kernels["combo CT defocus"]
     # kernels = combo_kernel_focus.kernels
     # print(kernels.size())

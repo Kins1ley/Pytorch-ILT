@@ -74,26 +74,13 @@ def compute_image(cmask, kernel, scale, workx, worky, dose, kernel_level):
     cmask_fft = shift(cmask_fft)
     # unit_test_mask_fft(cmask_fft, "/Users/zhubinwu/research/opc-hsd/cuilt/build/init_fft_cmask.txt")
     mul_fft = torch.zeros(cmask_fft.size(), dtype=torch.float64, device=device)
-    print(kernel_num)
-    torch.set_printoptions(precision=8)
     for i in range(kernel_num):
         temp = kernel_mult(kernel_x, kernel_y, kernel[:, :, i], cmask_fft)
-        if i == 0:
-            print(temp[1024, 1024])
         temp = shift(temp)
-        if i == 0:
-            print(temp[0, 0])
-        # temp = torch.fft.ifft2(temp)
         temp = torch.fft.ifft2(temp, norm="forward")
-        if i == 0:
-            print(temp[0, 0])
         temp = shift(temp)
-        # print(torch.abs(temp).size())
         mul_fft += scale[i] * torch.pow(torch.abs(temp), 2)
-        if i == 0:
-            print(temp[1024, 1024])
     return mul_fft
-
 
 # 用dose作用mask
 def mask_float(mask, dose):

@@ -36,10 +36,10 @@ class GradientBlock(nn.Module):
     def forward(self, params):
         self.m_mask = self.update_mask(MASKRELAX_SIGMOID_STEEPNESS * params) * self.filter
         # unit_test_kernel(self.m_mask, "/Users/zhubinwu/research/opc-hsd/cuilt/build/init_mask.txt", 2048, 2048)
-        # self.m_image[0] = simulate_image(self.m_mask, self.kernels["focus"].kernels,
-        #                                self.kernels["focus"].scales, MAX_DOSE, 15)
-        # self.m_image[1] = simulate_image(self.m_mask, self.kernels["defocus"].kernels,
-        #                                self.kernels["defocus"].scales, MIN_DOSE, 15)
+        self.m_image[0] = simulate_image(self.m_mask, self.kernels["focus"].kernels,
+                                       self.kernels["focus"].scales, MAX_DOSE, 15)
+        self.m_image[1] = simulate_image(self.m_mask, self.kernels["defocus"].kernels,
+                                       self.kernels["defocus"].scales, MIN_DOSE, 15)
         self.m_image[2] = simulate_image(self.m_mask, self.kernels["focus"].kernels,
                                          self.kernels["focus"].scales, NOMINAL_DOSE, 15)
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     gradient(test_opc.m_params)
     # plt.imshow(write_image_file(gradient.m_image[0], MAX_DOSE))
     # plt.savefig("outer_image_iter1.png")
-    # plt.imshow(write_image_file(gradient.m_image[1], MIN_DOSE))
-    # plt.savefig("inner_image_iter1.png")
+    plt.imshow(write_image_file(gradient.m_image[1], MIN_DOSE))
+    plt.savefig("inner_image_iter1.png")
     # plt.imshow(write_image_file(gradient.m_image[2], NOMINAL_DOSE))
     # plt.savefig("nominal_image_iter1.png")
