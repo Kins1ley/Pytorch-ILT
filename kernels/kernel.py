@@ -57,9 +57,9 @@ class Kernel(object):
             for j in range(5, len(data)//4-1, 2):
                 real_values = self.byte2float((data[4*j+3], data[4*j+2], data[4*j+1], data[4*j]))   # 逆排序是为了实现高位寻址->低位寻址
                 imag_values = self.byte2float((data[4*j+7], data[4*j+6], data[4*j+5], data[4*j+4]))
-                kernel.append(torch.tensor([real_values[0] + 1j*imag_values[0]], dtype=torch.complex64))
+                kernel.append(torch.tensor([real_values[0] + 1j*imag_values[0]], dtype=torch.complex128))
             kernels.append(kernel)
-        kernels = torch.tensor(kernels, dtype=torch.complex64)
+        kernels = torch.tensor(kernels, dtype=torch.complex128)
         kernels = (kernels.view((24, 35, 35))).permute(1, 2, 0)
         return kernels
 
@@ -68,7 +68,7 @@ class Kernel(object):
         self.combo_num = 9
         scales = torch.sqrt(self.scales)
         self.scales = torch.tensor([1], dtype=torch.float64)
-        combo_kernel = torch.zeros([self.knx, self.kny], dtype=torch.complex64).to(device)
+        combo_kernel = torch.zeros([self.knx, self.kny], dtype=torch.complex128).to(device)
         for i in range(self.combo_num):
             combo_kernel += scales[i] * self.kernels[:, :, i]
         self.kernels = combo_kernel

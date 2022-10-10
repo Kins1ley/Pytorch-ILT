@@ -15,8 +15,9 @@ from constant import ZERO_ERROR, WEIGHT_EPE_REGION
 from constant import device
 from hammer import Hammer
 from sraf import Sraf
-from utils import is_pixel_on
+from utils import is_pixel_on, unit_test_params
 from eval import EpeChecker
+
 
 class OPC(object):
 
@@ -82,7 +83,7 @@ class OPC(object):
         self.initialize_params()
         self.update_mask()
         self.determine_epe_weight()
-        self.m_epe_samples = self.m_epe_cheker.find_sample_point()
+        # self.m_epe_samples = self.m_epe_cheker.find_sample_point()
 
     def initialize_mask(self):
         self.m_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = \
@@ -107,6 +108,7 @@ class OPC(object):
         temp_params[self.m_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y,
                                 LITHOSIM_OFFSET:MASK_TILE_END_X] < MASK_PRINTABLE_THRESHOLD] = -1
         self.m_params[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = temp_params
+        # unit_test_params(self.m_params, "/Users/zhubinwu/research/opc-hsd/cuilt/build/init_params.txt")
 
         # the above implementation is the same as the below one
         # temp = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)

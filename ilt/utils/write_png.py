@@ -2,6 +2,7 @@ import torch
 
 from ilt.constant import TARGET_INTENSITY, MAX_DOSE, MIN_DOSE
 
+
 def write_image_file(image, dose, sizex=2048, sizey=2048):
     tempimg = torch.zeros([sizey, sizex], dtype=torch.int64)
     pngimg = torch.zeros([sizey, sizex, 4], dtype=torch.int64)
@@ -17,5 +18,5 @@ def write_image_file(image, dose, sizex=2048, sizey=2048):
         pngimg[:, :, 1] = 0
         pngimg[:, :, 0] = pngimg[:, :, 2] = tempimg/2
     pngimg[:, :, 3] = 127
-
+    print(torch.sum(pngimg[:,:,1] == 126))
     return pngimg
