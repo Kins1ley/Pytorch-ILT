@@ -1,7 +1,7 @@
 import torch
 import time
 from constant import device
-from utils import unit_test_kernel, unit_test_mask_fft
+# from utils import unit_test_kernel, unit_test_mask_fft
 
 imx = 2048
 imy = 2048
@@ -70,14 +70,14 @@ def kernel_mult(knx, kny, kernel, mask_fft):
 def compute_image(cmask, kernel, scale, workx, worky, dose, kernel_level):
     kernel_num = kernel_level
     cmask = shift(cmask)
-    cmask_fft = torch.fft.fft2(cmask, norm="forward")
+    cmask_fft = torch.fft.fft2(cmask)
     cmask_fft = shift(cmask_fft)
     # unit_test_mask_fft(cmask_fft, "/Users/zhubinwu/research/opc-hsd/cuilt/build/init_fft_cmask.txt")
     mul_fft = torch.zeros(cmask_fft.size(), dtype=torch.float64, device=device)
     for i in range(kernel_num):
         temp = kernel_mult(kernel_x, kernel_y, kernel[:, :, i], cmask_fft)
         temp = shift(temp)
-        temp = torch.fft.ifft2(temp, norm="forward")
+        temp = torch.fft.ifft2(temp)
         temp = shift(temp)
         mul_fft += scale[i] * torch.pow(torch.abs(temp), 2)
     return mul_fft

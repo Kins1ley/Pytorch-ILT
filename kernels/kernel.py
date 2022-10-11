@@ -1,10 +1,11 @@
 import struct
 import torch
 import os
+from ilt.constant import device
 
 class Kernel(object):
 
-    def __init__(self, knx, kny, device, defocus=0, conjuncture=0, combo=0):
+    def __init__(self, knx, kny, defocus=0, conjuncture=0, combo=0):
         self.knx = knx
         self.kny = kny
         # self.device = device
@@ -17,9 +18,9 @@ class Kernel(object):
         self.scales = self.read_scales()
 
         if not self.conjuncture:
-            self.kernels = self.read_kernels().to(device)
+            self.kernels = self.read_kernels()
         else:
-            self.kernels = torch.conj(self.read_kernels().transpose(0, 1)).to(device)
+            self.kernels = torch.conj(self.read_kernels().transpose(0, 1))
 
         if self.combo:
             self.combo_kernel()
@@ -34,7 +35,7 @@ class Kernel(object):
         scales = [float(scale[:-1]) for scale in scales_content[1:]]
         # print(scales)
         self.knum = int(scales_content[0][:-1])
-        temp = torch.tensor(scales, dtype=torch.float64)
+        temp = torch.tensor(scales, dtype=torch.float64, device=device)
         # print(temp)
         return temp
 
@@ -57,9 +58,9 @@ class Kernel(object):
             for j in range(5, len(data)//4-1, 2):
                 real_values = self.byte2float((data[4*j+3], data[4*j+2], data[4*j+1], data[4*j]))   # 逆排序是为了实现高位寻址->低位寻址
                 imag_values = self.byte2float((data[4*j+7], data[4*j+6], data[4*j+5], data[4*j+4]))
-                kernel.append(torch.tensor([real_values[0] + 1j*imag_values[0]], dtype=torch.complex128))
+                kernel.append(torch.tensor([real_values[0] + 1j*imag_values[0]], dtype=torch.complex128, device=device))
             kernels.append(kernel)
-        kernels = torch.tensor(kernels, dtype=torch.complex128)
+        kernels = torch.tensor(kernels, dtype=torch.complex128, device=device)
         kernels = (kernels.view((24, 35, 35))).permute(2, 1, 0)
         return kernels
 
@@ -67,7 +68,7 @@ class Kernel(object):
         self.knum = 1
         self.combo_num = 9
         scales = torch.sqrt(self.scales)
-        self.scales = torch.tensor([1], dtype=torch.float64)
+        self.scales = torch.tensor([1], dtype=torch.float64).to(device)
         combo_kernel = torch.zeros([self.knx, self.kny], dtype=torch.complex128).to(device)
         for i in range(self.combo_num):
             combo_kernel += scales[i] * self.kernels[:, :, i]

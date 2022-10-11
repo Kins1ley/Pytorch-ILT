@@ -1,6 +1,0 @@
-15
-tensor(-0.0006-0.0049j)
-tensor(-0.0006-0.0049j, dtype=torch.complex128)
-tensor(-0.0095-0.0467j, dtype=torch.complex128)
-tensor(-0.0095-0.0467j, dtype=torch.complex128)
-

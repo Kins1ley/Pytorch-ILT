@@ -15,7 +15,7 @@ from constant import ZERO_ERROR, WEIGHT_EPE_REGION
 from constant import device
 from hammer import Hammer
 from sraf import Sraf
-from utils import is_pixel_on, unit_test_params
+from utils import is_pixel_on
 from eval import EpeChecker
 
 
@@ -82,7 +82,7 @@ class OPC(object):
         self.initialize_mask()
         self.initialize_params()
         self.update_mask()
-        self.determine_epe_weight()
+        # self.determine_epe_weight()
         # self.m_epe_samples = self.m_epe_cheker.find_sample_point()
 
     def initialize_mask(self):
@@ -108,7 +108,6 @@ class OPC(object):
         temp_params[self.m_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y,
                                 LITHOSIM_OFFSET:MASK_TILE_END_X] < MASK_PRINTABLE_THRESHOLD] = -1
         self.m_params[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = temp_params
-        # unit_test_params(self.m_params, "/Users/zhubinwu/research/opc-hsd/cuilt/build/init_params.txt")
 
         # the above implementation is the same as the below one
         # temp = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
@@ -144,16 +143,16 @@ class OPC(object):
     def determine_const_step_size(self, num_iteration):
         self.m_step_size[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = OPC_INITIAL_STEP_SIZE
 
+
 if __name__ == "__main__":
     # matplotlib.use('TkAgg')
     # for i in range(1, 11):
     test_design = Design("../benchmarks/M1_test1" + ".glp")
     test_opc = OPC(test_design, hammer=1, sraf=0)
-    start = time.time()
+    # start = time.time()
     test_opc.run()
-    end = time.time()
-    print(end-start)
-    # plt.imshow(test_opc.m_mask)
-    # # plt.show()
-    # plt.savefig('add_sraf_mask' + str(i) + '.png')
+    # end = time.time()
+    # print(end-start)
+    plt.imshow(test_opc.m_mask)
+    plt.savefig('init_mask.png')
 
