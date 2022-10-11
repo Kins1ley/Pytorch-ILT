@@ -54,9 +54,7 @@ class OPC(object):
             if is_overlap:
                 x_bound = min(OPC_TILE_X - 1, urx)
                 y_bound = min(OPC_TILE_Y - 1, ury)
-                for x in range(max(0, llx), x_bound):
-                    for y in range(max(0, lly), y_bound):
-                        self.m_targetImage[y, x] = 1
+                self.m_targetImage[max(0, lly):y_bound, max(0, llx):x_bound] = 1
             if (urx - llx) > 22:
                 self.m_min_width = min(self.m_min_width, urx - llx)
             if (ury - lly) > 22:
@@ -82,8 +80,6 @@ class OPC(object):
         self.initialize_mask()
         self.initialize_params()
         self.update_mask()
-        # self.determine_epe_weight()
-        # self.m_epe_samples = self.m_epe_cheker.find_sample_point()
 
     def initialize_mask(self):
         self.m_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = \
@@ -146,7 +142,6 @@ class OPC(object):
 
 if __name__ == "__main__":
     # matplotlib.use('TkAgg')
-    # for i in range(1, 11):
     test_design = Design("../benchmarks/M1_test1" + ".glp")
     test_opc = OPC(test_design, hammer=1, sraf=0)
     # start = time.time()
