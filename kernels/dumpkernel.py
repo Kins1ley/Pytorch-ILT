@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     torch.save(opt_kernels["focus"].scales, 'scales/focus.pt')
     torch.save(opt_kernels["defocus"].scales, 'scales/defocus.pt')
-    torch.save(combo_kernels["combo focus"].scales, 'kernels/combo.pt')
+    torch.save(combo_kernels["combo focus"].scales, 'scales/combo.pt')
     # start = time.time()
     # torch.load('../ilt/kernels/tensor.pt', map_location=device)
     # end = time.time()

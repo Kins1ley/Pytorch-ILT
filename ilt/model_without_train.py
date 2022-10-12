@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import sys
 import platform
 import logging
+
 sys.path.append("..")
 
 from kernels import Kernel
@@ -14,17 +15,20 @@ from shapes import Design
 import simulator
 import simulator2
 from opc import OPC
+from constant import OPC_TILE_X, OPC_TILE_Y
 from constant import MAX_DOSE, MIN_DOSE, NOMINAL_DOSE
 from constant import MASKRELAX_SIGMOID_STEEPNESS, PHOTORISIST_SIGMOID_STEEPNESS, TARGET_INTENSITY
 from constant import device
 from constant import LITHOSIM_OFFSET, MASK_TILE_END_X, MASK_TILE_END_Y
+from constant import WEIGHT_PVBAND, WEIGHT_REGULARIZATION
 from utils import write_image_file
 
 
 class GradientBlock(nn.Module):
-    def __init__(self, kernels, target_image):
+    def __init__(self, kernels, target_image, epe_weight):
         super(GradientBlock, self).__init__()
         self.m_target_image = target_image
+        self.m_epe_weight = epe_weight
         # init mask
         self.update_mask = nn.Sigmoid()
         self.litho_sigmoid = nn.Sigmoid()
@@ -44,49 +48,88 @@ class GradientBlock(nn.Module):
         # self.simulator2 = simulator2.Simulator()
 
     def forward(self, params):
-        filter = torch.zeros([2048, 2048]).to(device)
+        gradient = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64).to(device)
+        filter = torch.zeros([OPC_TILE_Y, OPC_TILE_X]).to(device)
         filter[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = 1
-        m_image = [None, None, None]
-        m_term = [None, None, None]
-        m_cpx_term = [None, None, None]
-        m_mask = self.update_mask(MASKRELAX_SIGMOID_STEEPNESS * params) * filter
-        m_image[0] = self.simulator.simulate_image(m_mask, self.kernels["focus"].kernels,
-                                                   self.kernels["focus"].scales, MAX_DOSE, 15)
-        m_image[1] = self.simulator.simulate_image(m_mask, self.kernels["defocus"].kernels,
-                                                   self.kernels["defocus"].scales, MIN_DOSE, 15)
-        m_image[2] = self.simulator.simulate_image(m_mask, self.kernels["focus"].kernels,
-                                                   self.kernels["focus"].scales, NOMINAL_DOSE, 15)
+        image = [None, None, None]
+        term = [None, None, None]
+        cpx_term = [None, None, None]
+        mask = self.update_mask(MASKRELAX_SIGMOID_STEEPNESS * params) * filter
+        image[0] = self.simulator.simulate_image(mask, self.kernels["focus"].kernels,
+                                                 self.kernels["focus"].scales, MAX_DOSE, 15)
+        image[1] = self.simulator.simulate_image(mask, self.kernels["defocus"].kernels,
+                                                 self.kernels["defocus"].scales, MIN_DOSE, 15)
+        image[2] = self.simulator.simulate_image(mask, self.kernels["focus"].kernels,
+                                                 self.kernels["focus"].scales, NOMINAL_DOSE, 15)
 
-        m_image[0] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (m_image[0] - TARGET_INTENSITY))
-        m_image[1] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (m_image[1] - TARGET_INTENSITY))
-        m_image[2] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (m_image[2] - TARGET_INTENSITY))
+        image[0] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[0] - TARGET_INTENSITY))
+        image[1] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[1] - TARGET_INTENSITY))
+        image[2] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[2] - TARGET_INTENSITY))
 
         # m_term[0]: (Znom - Zt)^3 * Znom * (1-Znom)
-        m_term[0] = torch.pow(m_image[2] - self.m_target_image, 3) * m_image[2] * (1 - m_image[2])
+        term[0] = torch.pow(image[2] - self.m_target_image, 3) * image[2] * (1 - image[2])
 
         # conv(M, conj(Hnom))
-        m_cpx_term[0] = self.simulator.convolve_image(self.kernels["combo CT focus"].kernels,
-                                                      self.kernels["combo CT focus"].scales,
-                                                      MAX_DOSE, 1, mask=m_mask)
+        cpx_term[0] = self.simulator.convolve_image(self.kernels["combo CT focus"].kernels,
+                                                    self.kernels["combo CT focus"].scales,
+                                                    MAX_DOSE, 1, mask=mask)
         # (Znom - Zt)^3 * Znom * (1-Znom) * conv(M, conj(Hnom))
-        m_cpx_term[0] = torch.mul(m_cpx_term[0], m_term[0])
+        cpx_term[0] = torch.mul(cpx_term[0], term[0])
         # conv(Hnom, (Znom - Zt)^3 * Znom * (1-Znom) * conv(M, conj(Hnom)))
-        m_cpx_term[1] = self.simulator.convolve_image(self.kernels["combo focus"].kernels,
-                                                      self.kernels["combo focus"].scales,
-                                                      MAX_DOSE, 1, matrix=m_cpx_term[0])
+        cpx_term[1] = self.simulator.convolve_image(self.kernels["combo focus"].kernels,
+                                                    self.kernels["combo focus"].scales,
+                                                    MAX_DOSE, 1, matrix=cpx_term[0])
         # conv(M, Hnom)
-        m_cpx_term[0] = self.simulator.convolve_image(self.kernels["combo focus"].kernels,
-                                                      self.kernels["combo focus"].scales,
-                                                      MAX_DOSE, 1, mask=m_mask)
+        cpx_term[0] = self.simulator.convolve_image(self.kernels["combo focus"].kernels,
+                                                    self.kernels["combo focus"].scales,
+                                                    MAX_DOSE, 1, mask=mask)
         # (Znom - Zt)^3 * Znom * (1-Znom) * conv(M, Hnom)
-        m_cpx_term[0] = torch.mul(m_cpx_term[0], m_term[0])
+        cpx_term[0] = torch.mul(cpx_term[0], term[0])
         # conv(conj(Hnom), (Znom - Zt)^3 * Znom * (1-Znom) * conv(M, Hnom))
-        m_cpx_term[2] = self.simulator.convolve_image(self.kernels["combo CT focus"].kernels,
-                                                      self.kernels["combo CT focus"].scales,
-                                                      MAX_DOSE, 1, matrix = m_cpx_term[0])
-        m_cpx_term[0] = m_cpx_term[1] + m_cpx_term[2]
+        cpx_term[2] = self.simulator.convolve_image(self.kernels["combo CT focus"].kernels,
+                                                    self.kernels["combo CT focus"].scales,
+                                                    MAX_DOSE, 1, matrix=cpx_term[0])
+        cpx_term[0] = cpx_term[1] + cpx_term[2]
         # print(m_cpx_term[0][1024, 1024])
+        # 4 * theta_z * theta_m * cpx_term[0]
+        gradient[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] =  \
+            4 * PHOTORISIST_SIGMOID_STEEPNESS * MASKRELAX_SIGMOID_STEEPNESS * \
+            self.m_epe_weight[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] * \
+            cpx_term[0][LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X].real
 
+        # m_term[0]: (Z_defocus - Zt) * Z_defocus * (1-Z_defocus)
+        term[0] = (image[1] - self.m_target_image) * image[1] * (1 - image[1])
+        # conv(M, conj(H_defocus))
+        cpx_term[0] = self.simulator.convolve_image(self.kernels["combo CT defocus"].kernels,
+                                                    self.kernels["combo CT defocus"].scales,
+                                                    MIN_DOSE, 1, mask=mask)
+        # (Z_defocus - Zt) * Z_defocus * (1-Z_defocus) * conv(M, conj(H_defocus))
+        cpx_term[0] = torch.mul(term[0], cpx_term[0])
+        # conv(H_defocus, (Z_defocus - Zt) * Z_defocus * (1-Z_defocus) * conv(M, conj(H_defocus)))
+        cpx_term[1] = self.simulator.convolve_image(self.kernels["combo defocus"].kernels,
+                                                    self.kernels["combo defocus"].scales,
+                                                    MIN_DOSE, 1, matrix=cpx_term[0])
+        # conv(M, H_defocus)
+        cpx_term[0] = self.simulator.convolve_image(self.kernels["combo defocus"].kernels,
+                                                    self.kernels["combo defocus"].scales,
+                                                    MIN_DOSE, 1, mask=mask)
+        # (Z_defocus - Zt) * Z_defocus * (1-Z_defocus) * conv(M, H_defocus)
+        cpx_term[0] = torch.mul(term[0], cpx_term[0])
+        # conv(conj(H_defocus), (Z_defocus - Zt) * Z_defocus * (1-Z_defocus) * conv(M, H_defocus))
+        cpx_term[2] = self.simulator.convolve_image(self.kernels["combo CT defocus"].kernels,
+                                                    self.kernels["combo CT defocus"].scales,
+                                                    MIN_DOSE, 1, matrix=cpx_term[0])
+        cpx_term[0] = cpx_term[1] + cpx_term[2]
+
+        pvb_gradient_constant = WEIGHT_PVBAND * 2 * PHOTORISIST_SIGMOID_STEEPNESS * MASKRELAX_SIGMOID_STEEPNESS
+        gradient[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] \
+            = mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] * (1-mask[LITHOSIM_OFFSET:
+              MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X]) * \
+              (gradient[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] + pvb_gradient_constant *
+              cpx_term[0][LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X].real +
+              MASKRELAX_SIGMOID_STEEPNESS * (WEIGHT_REGULARIZATION * (-8 * mask[LITHOSIM_OFFSET:MASK_TILE_END_Y,
+              LITHOSIM_OFFSET:MASK_TILE_END_X] + 4)))
+        # print(gradient[1024, 1020:1030])
 
 
 def check_equal_image(cpp_file, py_image):
@@ -119,7 +162,7 @@ def check_equal_image(cpp_file, py_image):
 
 
 if __name__ == "__main__":
-    torch.set_printoptions(precision=10)
+    torch.set_printoptions(precision=7)
     # logging setting
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
@@ -135,15 +178,15 @@ if __name__ == "__main__":
     defocus_flag = 1
     conjuncture_flag = 1
     combo_flag = 1
-    #4 kinds of kernels: focus, defocus, combo focus, combo CT focus
+    # 4 kinds of kernels: focus, defocus, combo focus, combo CT focus
     opt_kernels = {"focus": Kernel(35, 35), "defocus": Kernel(35, 35, defocus=defocus_flag),
                    # "CT focus": Kernel(35, 35, conjuncture=conjuncture_flag),
                    # "CT defocus": Kernel(35, 35, defocus=defocus_flag, conjuncture=conjuncture_flag),
                    "combo focus": Kernel(35, 35, combo=combo_flag),
-                   # "combo defocus": Kernel(35, 35, defocus=defocus_flag, combo=combo_flag),
+                   "combo defocus": Kernel(35, 35, defocus=defocus_flag, combo=combo_flag),
                    "combo CT focus": Kernel(35, 35, conjuncture=conjuncture_flag, combo=combo_flag),
-                   # "combo CT defocus": Kernel(35, 35, defocus=defocus_flag, conjuncture=conjuncture_flag,
-                   #                            combo=combo_flag)
+                   "combo CT defocus": Kernel(35, 35, defocus=defocus_flag, conjuncture=conjuncture_flag,
+                                              combo=combo_flag)
                    }
 
     # init design file and init params
@@ -151,12 +194,13 @@ if __name__ == "__main__":
     test_opc = OPC(test_design, hammer=1, sraf=0)
     test_opc.run()
     # init the gradient block
-    gradient = GradientBlock(opt_kernels, test_opc.m_targetImage)
+    gradient = GradientBlock(opt_kernels, test_opc.m_targetImage, test_opc.m_epe_weight)
     # calculate the simulated image of the init_params
-    # for i in range(10):
-    gradient(test_opc.m_params)
-    # end = time.time()
-    # print(end-start)
+    start = time.time()
+    for i in range(10):
+        gradient(test_opc.m_params)
+    end = time.time()
+    print(end-start)
     # outer_image = write_image_file(gradient.m_image[0], MAX_DOSE)
     # inner_image = write_image_file(gradient.m_image[1], MIN_DOSE)
     # nominal_image = write_image_file(gradient.m_image[2], NOMINAL_DOSE)

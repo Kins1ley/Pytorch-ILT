@@ -80,6 +80,7 @@ class OPC(object):
         self.initialize_mask()
         self.initialize_params()
         self.update_mask()
+        self.determine_epe_weight(num_iteration=1)
 
     def initialize_mask(self):
         self.m_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = \

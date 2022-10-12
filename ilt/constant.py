@@ -37,6 +37,7 @@ KERNEL_Y = 35
 # Other common constant value
 ZERO_ERROR = 0.000001
 WEIGHT_EPE_REGION = 0.5
-
+WEIGHT_PVBAND = 1
+WEIGHT_REGULARIZATION = 0.025
 #device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
