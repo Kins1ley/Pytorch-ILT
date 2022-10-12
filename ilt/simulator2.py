@@ -39,9 +39,12 @@ class Simulator(object):
         cmask_fft = self.shift(cmask_fft)
         temp = self.shift(self.kernel_mult(self.kernel_x, self.kernel_y, kernel, cmask_fft, kernel_num))
         temp = self.shift(torch.fft.ifft2(temp, norm="forward"))
-        scale = scale[:kernel_num].unsqueeze(1).unsqueeze(2)
-        mul_fft = torch.sum(scale * torch.pow(torch.abs(temp), 2), dim=0).to(device)
-        return mul_fft
+        if kernel_level == 1:
+            return temp[0]
+        elif kernel_level == 15:
+            scale = scale[:kernel_num].unsqueeze(1).unsqueeze(2)
+            mul_fft = torch.sum(scale * torch.pow(torch.abs(temp), 2), dim=0).to(device)
+            return mul_fft
 
     def mask_float(self, mask, dose):
         return (dose * mask).to(torch.complex128)
@@ -50,3 +53,20 @@ class Simulator(object):
         cmask = self.mask_float(mask, dose)
         image = self.compute_image(cmask, kernel, scale, 0, 0, dose, kernel_level)
         return image
+
+    def convolve_image(self, kernel, scale, dose, kernel_level, mask=None, matrix=None):
+        if mask is not None:
+            return self.simulate_image(mask, kernel, scale, dose, kernel_level)
+        elif matrix is not None:
+            cmask = matrix
+            image = self.compute_image(cmask, kernel, scale, 0, 0, dose, kernel_level)
+            return image
+
+if __name__ == "__main__":
+    simulator = Simulator()
+    mask = torch.randn([2048, 2048])
+    kernel = torch.randn([35, 35, 1])
+    scales = torch.randn([1])
+    dose = 1.02
+    kernel_level = 1
+    simulator.simulate_image(mask, kernel, scales, dose, kernel_level)

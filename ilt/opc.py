@@ -118,7 +118,7 @@ class OPC(object):
     def determine_epe_weight(self, num_iteration=1):
         if num_iteration == 1:
             self.m_epe_cheker.set_epe_safe_region(self.m_epe_weight, constraint=10)
-            self.m_epe_weight[self.m_epe_weight < ZERO_ERROR] = 0.5
+            self.m_epe_weight[self.m_epe_weight < ZERO_ERROR] = WEIGHT_EPE_REGION
 
             # the above implementation is the same as the below one
 

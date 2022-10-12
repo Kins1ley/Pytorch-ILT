@@ -1,12 +1,11 @@
 import torch
 import torch.nn as nn
-import torchvision
 import time
 import matplotlib
 import matplotlib.pyplot as plt
-import torchvision
 import sys
 import platform
+import logging
 sys.path.append("..")
 
 from kernels import Kernel
@@ -16,37 +15,78 @@ import simulator
 import simulator2
 from opc import OPC
 from constant import MAX_DOSE, MIN_DOSE, NOMINAL_DOSE
-from constant import MASKRELAX_SIGMOID_STEEPNESS
+from constant import MASKRELAX_SIGMOID_STEEPNESS, PHOTORISIST_SIGMOID_STEEPNESS, TARGET_INTENSITY
 from constant import device
 from constant import LITHOSIM_OFFSET, MASK_TILE_END_X, MASK_TILE_END_Y
 from utils import write_image_file
 
 
 class GradientBlock(nn.Module):
-    def __init__(self, kernels):
+    def __init__(self, kernels, target_image):
         super(GradientBlock, self).__init__()
+        self.m_target_image = target_image
         # init mask
         self.update_mask = nn.Sigmoid()
-        self.m_mask = None
-        self.filter = torch.zeros([2048, 2048]).to(device)
-        self.filter[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = 1
+        self.litho_sigmoid = nn.Sigmoid()
+        # self.m_mask = None
+        # self.filter = torch.zeros([2048, 2048]).to(device)
+        # self.filter[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = 1
         # prepare for calculate pvband
         # image[0]: MAX_DOSE, FOCUS
         # image[1]: MIN_DOSE, DEFOCUS
         # image[2]: NOMINAL_DOSE, FOCUS
-        self.m_image = [None, None, None]
+        # self.m_image = [None, None, None]
+        # self.m_cpx_term = [None, None, None]
+        # self.m_term = [None, None, None]
         self.kernels = kernels
         self.simulator = simulator2.Simulator()
+        # self.
         # self.simulator2 = simulator2.Simulator()
 
     def forward(self, params):
-        self.m_mask = self.update_mask(MASKRELAX_SIGMOID_STEEPNESS * params) * self.filter
-        self.m_image[0] = self.simulator.simulate_image(self.m_mask, self.kernels["focus"].kernels,
-                                       self.kernels["focus"].scales, MAX_DOSE, 15)
-        self.m_image[1] = self.simulator.simulate_image(self.m_mask, self.kernels["defocus"].kernels,
-                                       self.kernels["defocus"].scales, MIN_DOSE, 15)
-        self.m_image[2] = self.simulator.simulate_image(self.m_mask, self.kernels["focus"].kernels,
-                                         self.kernels["focus"].scales, NOMINAL_DOSE, 15)
+        filter = torch.zeros([2048, 2048]).to(device)
+        filter[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = 1
+        m_image = [None, None, None]
+        m_term = [None, None, None]
+        m_cpx_term = [None, None, None]
+        m_mask = self.update_mask(MASKRELAX_SIGMOID_STEEPNESS * params) * filter
+        m_image[0] = self.simulator.simulate_image(m_mask, self.kernels["focus"].kernels,
+                                                   self.kernels["focus"].scales, MAX_DOSE, 15)
+        m_image[1] = self.simulator.simulate_image(m_mask, self.kernels["defocus"].kernels,
+                                                   self.kernels["defocus"].scales, MIN_DOSE, 15)
+        m_image[2] = self.simulator.simulate_image(m_mask, self.kernels["focus"].kernels,
+                                                   self.kernels["focus"].scales, NOMINAL_DOSE, 15)
+
+        m_image[0] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (m_image[0] - TARGET_INTENSITY))
+        m_image[1] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (m_image[1] - TARGET_INTENSITY))
+        m_image[2] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (m_image[2] - TARGET_INTENSITY))
+
+        # m_term[0]: (Znom - Zt)^3 * Znom * (1-Znom)
+        m_term[0] = torch.pow(m_image[2] - self.m_target_image, 3) * m_image[2] * (1 - m_image[2])
+
+        # conv(M, conj(Hnom))
+        m_cpx_term[0] = self.simulator.convolve_image(self.kernels["combo CT focus"].kernels,
+                                                      self.kernels["combo CT focus"].scales,
+                                                      MAX_DOSE, 1, mask=m_mask)
+        # (Znom - Zt)^3 * Znom * (1-Znom) * conv(M, conj(Hnom))
+        m_cpx_term[0] = torch.mul(m_cpx_term[0], m_term[0])
+        # conv(Hnom, (Znom - Zt)^3 * Znom * (1-Znom) * conv(M, conj(Hnom)))
+        m_cpx_term[1] = self.simulator.convolve_image(self.kernels["combo focus"].kernels,
+                                                      self.kernels["combo focus"].scales,
+                                                      MAX_DOSE, 1, matrix=m_cpx_term[0])
+        # conv(M, Hnom)
+        m_cpx_term[0] = self.simulator.convolve_image(self.kernels["combo focus"].kernels,
+                                                      self.kernels["combo focus"].scales,
+                                                      MAX_DOSE, 1, mask=m_mask)
+        # (Znom - Zt)^3 * Znom * (1-Znom) * conv(M, Hnom)
+        m_cpx_term[0] = torch.mul(m_cpx_term[0], m_term[0])
+        # conv(conj(Hnom), (Znom - Zt)^3 * Znom * (1-Znom) * conv(M, Hnom))
+        m_cpx_term[2] = self.simulator.convolve_image(self.kernels["combo CT focus"].kernels,
+                                                      self.kernels["combo CT focus"].scales,
+                                                      MAX_DOSE, 1, matrix = m_cpx_term[0])
+        m_cpx_term[0] = m_cpx_term[1] + m_cpx_term[2]
+        # print(m_cpx_term[0][1024, 1024])
+
 
 
 def check_equal_image(cpp_file, py_image):
@@ -79,36 +119,44 @@ def check_equal_image(cpp_file, py_image):
 
 
 if __name__ == "__main__":
+    torch.set_printoptions(precision=10)
+    # logging setting
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    console_handler = logging.StreamHandler()
+    logger.addHandler(console_handler)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
+
     # kernel setting
     if platform.system() == "Darwin":
         matplotlib.use('TkAgg')
+    # start = time.time()
     defocus_flag = 1
     conjuncture_flag = 1
     combo_flag = 1
+    #4 kinds of kernels: focus, defocus, combo focus, combo CT focus
     opt_kernels = {"focus": Kernel(35, 35), "defocus": Kernel(35, 35, defocus=defocus_flag),
-                   "CT focus": Kernel(35, 35, conjuncture=conjuncture_flag),
-                   "CT defocus": Kernel(35, 35, defocus=defocus_flag, conjuncture=conjuncture_flag)}
+                   # "CT focus": Kernel(35, 35, conjuncture=conjuncture_flag),
+                   # "CT defocus": Kernel(35, 35, defocus=defocus_flag, conjuncture=conjuncture_flag),
+                   "combo focus": Kernel(35, 35, combo=combo_flag),
+                   # "combo defocus": Kernel(35, 35, defocus=defocus_flag, combo=combo_flag),
+                   "combo CT focus": Kernel(35, 35, conjuncture=conjuncture_flag, combo=combo_flag),
+                   # "combo CT defocus": Kernel(35, 35, defocus=defocus_flag, conjuncture=conjuncture_flag,
+                   #                            combo=combo_flag)
+                   }
 
     # init design file and init params
-
-    start = time.time()
     test_design = Design("../benchmarks/M1_test1" + ".glp")
-    # end = time.time()
-    # print(end-start)
-    # start = time.time()
     test_opc = OPC(test_design, hammer=1, sraf=0)
-    # end = time.time()
-    # print(end-start)
-    # start = time.time()
     test_opc.run()
+    # init the gradient block
+    gradient = GradientBlock(opt_kernels, test_opc.m_targetImage)
+    # calculate the simulated image of the init_params
+    # for i in range(10):
+    gradient(test_opc.m_params)
     # end = time.time()
     # print(end-start)
-    gradient = GradientBlock(opt_kernels)
-
-    # start = time.time()
-    gradient(test_opc.m_params)
-    end = time.time()
-    print(end-start)
     # outer_image = write_image_file(gradient.m_image[0], MAX_DOSE)
     # inner_image = write_image_file(gradient.m_image[1], MIN_DOSE)
     # nominal_image = write_image_file(gradient.m_image[2], NOMINAL_DOSE)
