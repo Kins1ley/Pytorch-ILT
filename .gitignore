@@ -1,11 +1,10 @@
-.idea/
-tutorials/pytorch-tutorial/
-cuilt/
+.idea/*
+.vscode/*
+*/__pycache__
+tutorials/pytorch-tutorial/*
+cuilt/*
 ilt/init_target
 ilt/init_hammer_mask
 ilt/init_add_sraf_mask
 ilt/*.png
-.DS_Store
-ilt/.DS_Store
-ilt/__pycache__/
-kernels/__pycache__/
+*/.DS_Store
