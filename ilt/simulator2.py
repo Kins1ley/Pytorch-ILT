@@ -3,7 +3,7 @@ import torch
 from constant import device
 from constant import KERNEL_X, KERNEL_Y
 from constant import OPC_TILE_X, OPC_TILE_Y
-
+from constant import TARGET_INTENSITY
 
 class Simulator(object):
     def __init__(self):
@@ -61,6 +61,10 @@ class Simulator(object):
             cmask = matrix
             image = self.compute_image(cmask, kernel, scale, 0, 0, dose, kernel_level)
             return image
+
+    def calculate_pvband(self, inner, outer):
+        pvb_area = torch.sum(torch.logical_and(outer >= TARGET_INTENSITY, inner < TARGET_INTENSITY))
+        return pvb_area
 
 if __name__ == "__main__":
     simulator = Simulator()

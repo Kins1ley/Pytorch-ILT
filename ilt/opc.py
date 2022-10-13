@@ -10,9 +10,11 @@ from shapes import Rect, Polygon
 from constant import OPC_TILE_X, OPC_TILE_Y
 from constant import MASK_TILE_END_X, MASK_TILE_END_Y, MASKRELAX_SIGMOID_STEEPNESS, MASK_PRINTABLE_THRESHOLD
 from constant import LITHOSIM_OFFSET
-from constant import OPC_INITIAL_STEP_SIZE, OPC_JUMP_STEP_SIZE, GRADIENT_DESCENT_BETA
+from constant import OPC_INITIAL_STEP_SIZE, OPC_JUMP_STEP_SIZE, OPC_JUMP_STEP_THRESHOLD
+from constant import GRADIENT_DESCENT_ALPHA, GRADIENT_DESCENT_BETA
 from constant import ZERO_ERROR, WEIGHT_EPE_REGION
 from constant import device
+from constant import WEIGHT_REGULARIZATION
 from hammer import Hammer
 from sraf import Sraf
 from utils import is_pixel_on
@@ -27,21 +29,25 @@ class OPC(object):
         self.m_min_height = 1024
         self.m_hammer = hammer
         self.m_sraf = sraf
-        # self.m_minObjValue = sys.float_info.max
+        self.m_min_score = sys.float_info.max
         # self.m_numFinalIteration = OPC_ITERATION_THRESHOLD
-        self.m_targetImage = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
+        self.m_target_image = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
         # M matrix
         self.m_mask = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
         # P matrix
         self.m_params = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
 
         # EPE checker setting
-        self.m_epe_cheker = EpeChecker(device)
-        self.m_epe_cheker.set_design(self.m_design)
+        self.m_epe_checker = EpeChecker()
+        self.m_epe_checker.set_design(self.m_design)
         self.m_epe_weight = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
         self.m_epe_samples = None
         # step size
         self.m_step_size = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
+        self.m_pre_obj_value = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
+        self.m_score_convergence = []
+        self.m_obj_convergence = []
+        self.m_best_mask = []
 
     def rect2matrix(self, origin_x, origin_y):
         rects = self.m_design.rects
@@ -54,7 +60,7 @@ class OPC(object):
             if is_overlap:
                 x_bound = min(OPC_TILE_X - 1, urx)
                 y_bound = min(OPC_TILE_Y - 1, ury)
-                self.m_targetImage[max(0, lly):y_bound, max(0, llx):x_bound] = 1
+                self.m_target_image[max(0, lly):y_bound, max(0, llx):x_bound] = 1
             if (urx - llx) > 22:
                 self.m_min_width = min(self.m_min_width, urx - llx)
             if (ury - lly) > 22:
@@ -84,7 +90,7 @@ class OPC(object):
 
     def initialize_mask(self):
         self.m_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = \
-            self.m_targetImage[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X]
+            self.m_target_image[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X]
 
         if self.m_hammer:
             hammer_mask = Hammer(self.m_design, self.m_mask)
@@ -99,32 +105,22 @@ class OPC(object):
         self.m_mask = torch.sigmoid(MASKRELAX_SIGMOID_STEEPNESS * self.m_params)
 
     def initialize_params(self):
-
         temp_params = torch.ones([MASK_TILE_END_Y-LITHOSIM_OFFSET,
                                   MASK_TILE_END_X-LITHOSIM_OFFSET], dtype=torch.float64)
         temp_params[self.m_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y,
                                 LITHOSIM_OFFSET:MASK_TILE_END_X] < MASK_PRINTABLE_THRESHOLD] = -1
         self.m_params[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = temp_params
 
-        # the above implementation is the same as the below one
-        # temp = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
-        # for y in range(LITHOSIM_OFFSET, MASK_TILE_END_Y):
-        #     for x in range(LITHOSIM_OFFSET, MASK_TILE_END_X):
-        #         if is_pixel_on(self.m_mask, h_coord=x, v_coord=y):
-        #             temp[y, x] = 1
-        #         else:
-        #             temp[y, x] = -1
-        # print(self.m_params.equal(temp))
-
     def determine_epe_weight(self, num_iteration=1):
+        # todo: test the correctness
         if num_iteration == 1:
-            self.m_epe_cheker.set_epe_safe_region(self.m_epe_weight, constraint=10)
+            self.m_epe_checker.set_epe_safe_region(self.m_epe_weight, constraint=10)
             self.m_epe_weight[self.m_epe_weight < ZERO_ERROR] = WEIGHT_EPE_REGION
 
             # the above implementation is the same as the below one
 
             # temp = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64)
-            # self.m_epe_cheker.set_epe_safe_region(temp, constraint=10)
+            # self.m_epe_checker.set_epe_safe_region(temp, constraint=10)
             # for y in range(OPC_TILE_Y):
             #     for x in range(OPC_TILE_X):
             #         if temp[y, x] < ZERO_ERROR:
@@ -137,9 +133,48 @@ class OPC(object):
             #     for x in range(OPC_TILE_X):
             #         self.m_epe_weight[y, x] = 1
 
-    def determine_const_step_size(self, num_iteration):
-        self.m_step_size[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = OPC_INITIAL_STEP_SIZE
+    def determine_const_step_size(self, num_iteration, filter):
+        # todo: test the correctness
+        step_size = OPC_INITIAL_STEP_SIZE * filter
+        return step_size
 
+    def determine_step_size_backtrack(self, num_iteration, filter, diff_target, diff_image, discrete_penalty):
+        # todo: test the correctness
+        if num_iteration == 1:
+            self.m_step_size = OPC_INITIAL_STEP_SIZE * filter
+            self.m_pre_obj_value = self.calculate_pixel_obj_value(diff_target, diff_image, discrete_penalty)
+        else:
+            count_jump = torch.sum(self.m_step_size < OPC_JUMP_STEP_THRESHOLD)
+            self.m_step_size[self.m_step_size < OPC_JUMP_STEP_THRESHOLD] = OPC_JUMP_STEP_SIZE
+            self.m_step_size *= filter
+            cur_obj_value = self.calculate_pixel_obj_value(diff_target, diff_image, discrete_penalty)
+            count_reduce = torch.sum(self.m_step_size[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X]
+                                 - cur_obj_value[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] < 0)
+            self.m_step_size[self.m_pre_obj_value - cur_obj_value < 0] *= GRADIENT_DESCENT_BETA
+            self.m_step_size *= filter
+            self.m_pre_obj_value = cur_obj_value
+            print("{} step jumped; {} stepsize reduced".format(count_jump, count_reduce))
+        return self.m_step_size
+
+    def calculate_pixel_obj_value(self, diff_target, diff_image, discrete_penalty):
+        # todo: test the correctness
+        return self.m_epe_weight * torch.pow(diff_target, 4) + torch.pow(diff_image, 2) + WEIGHT_REGULARIZATION * discrete_penalty
+
+    def calculate_obj_value(self, diff_target, diff_image, discrete_penalty):
+        # todo: test the correctness
+        return torch.sum(self.calculate_pixel_obj_value(diff_target, diff_image, discrete_penalty)[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X])
+
+    def update_convergence(self, diff_target, diff_image, discrete_penalty, epe_convergence, pvband):
+        # todo: test the correctness
+        self.m_score_convergence.append(5000 * epe_convergence + 4 * pvband)
+        self.m_obj_convergence.append(self.calculate_obj_value(diff_target, diff_image, discrete_penalty))
+
+    def keep_best_result(self, cur_mask):
+        # todo: test the correctness
+        cur_score = self.m_score_convergence[-1]
+        if cur_score.to(torch.float64) < self.m_min_score:
+            self.m_min_score = cur_score
+            self.m_best_mask.append(cur_mask)
 
 if __name__ == "__main__":
     # matplotlib.use('TkAgg')

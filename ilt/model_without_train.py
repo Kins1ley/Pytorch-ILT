@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import sys
 import platform
 import logging
-
 sys.path.append("..")
 
 from kernels import Kernel
@@ -25,29 +24,18 @@ from utils import write_image_file
 
 
 class GradientBlock(nn.Module):
-    def __init__(self, kernels, target_image, epe_weight):
+    def __init__(self, kernels, design):
         super(GradientBlock, self).__init__()
-        self.m_target_image = target_image
-        self.m_epe_weight = epe_weight
+        self.design = design
         # init mask
         self.update_mask = nn.Sigmoid()
         self.litho_sigmoid = nn.Sigmoid()
-        # self.m_mask = None
-        # self.filter = torch.zeros([2048, 2048]).to(device)
-        # self.filter[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = 1
-        # prepare for calculate pvband
-        # image[0]: MAX_DOSE, FOCUS
-        # image[1]: MIN_DOSE, DEFOCUS
-        # image[2]: NOMINAL_DOSE, FOCUS
-        # self.m_image = [None, None, None]
-        # self.m_cpx_term = [None, None, None]
-        # self.m_term = [None, None, None]
         self.kernels = kernels
         self.simulator = simulator2.Simulator()
-        # self.
-        # self.simulator2 = simulator2.Simulator()
 
-    def forward(self, params):
+    def forward(self, params, num_iteration):
+        target_image = self.design.m_target_image
+        epe_weight = self.design.m_epe_weight
         gradient = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64).to(device)
         filter = torch.zeros([OPC_TILE_Y, OPC_TILE_X]).to(device)
         filter[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = 1
@@ -61,13 +49,18 @@ class GradientBlock(nn.Module):
                                                  self.kernels["defocus"].scales, MIN_DOSE, 15)
         image[2] = self.simulator.simulate_image(mask, self.kernels["focus"].kernels,
                                                  self.kernels["focus"].scales, NOMINAL_DOSE, 15)
+        pvband = self.simulator.calculate_pvband(image[1], image[0])
 
+        # start = time.time()
+        epe_convergence = self.design.m_epe_checker.run(image[2])
+        # end = time.time()
+        # print("epe check time", end-start)
         image[0] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[0] - TARGET_INTENSITY))
         image[1] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[1] - TARGET_INTENSITY))
         image[2] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[2] - TARGET_INTENSITY))
 
         # m_term[0]: (Znom - Zt)^3 * Znom * (1-Znom)
-        term[0] = torch.pow(image[2] - self.m_target_image, 3) * image[2] * (1 - image[2])
+        term[0] = torch.pow(image[2] - target_image, 3) * image[2] * (1 - image[2])
 
         # conv(M, conj(Hnom))
         cpx_term[0] = self.simulator.convolve_image(self.kernels["combo CT focus"].kernels,
@@ -90,15 +83,12 @@ class GradientBlock(nn.Module):
                                                     self.kernels["combo CT focus"].scales,
                                                     MAX_DOSE, 1, matrix=cpx_term[0])
         cpx_term[0] = cpx_term[1] + cpx_term[2]
-        # print(m_cpx_term[0][1024, 1024])
+
         # 4 * theta_z * theta_m * cpx_term[0]
-        gradient[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] =  \
-            4 * PHOTORISIST_SIGMOID_STEEPNESS * MASKRELAX_SIGMOID_STEEPNESS * \
-            self.m_epe_weight[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] * \
-            cpx_term[0][LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X].real
+        gradient = 4 * PHOTORISIST_SIGMOID_STEEPNESS * MASKRELAX_SIGMOID_STEEPNESS * epe_weight * cpx_term[0].real
 
         # m_term[0]: (Z_defocus - Zt) * Z_defocus * (1-Z_defocus)
-        term[0] = (image[1] - self.m_target_image) * image[1] * (1 - image[1])
+        term[0] = (image[1] - target_image) * image[1] * (1 - image[1])
         # conv(M, conj(H_defocus))
         cpx_term[0] = self.simulator.convolve_image(self.kernels["combo CT defocus"].kernels,
                                                     self.kernels["combo CT defocus"].scales,
@@ -122,15 +112,19 @@ class GradientBlock(nn.Module):
         cpx_term[0] = cpx_term[1] + cpx_term[2]
 
         pvb_gradient_constant = WEIGHT_PVBAND * 2 * PHOTORISIST_SIGMOID_STEEPNESS * MASKRELAX_SIGMOID_STEEPNESS
-        gradient[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] \
-            = mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] * (1-mask[LITHOSIM_OFFSET:
-              MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X]) * \
-              (gradient[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] + pvb_gradient_constant *
-              cpx_term[0][LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X].real +
-              MASKRELAX_SIGMOID_STEEPNESS * (WEIGHT_REGULARIZATION * (-8 * mask[LITHOSIM_OFFSET:MASK_TILE_END_Y,
-              LITHOSIM_OFFSET:MASK_TILE_END_X] + 4)))
+        discrete_penalty = WEIGHT_REGULARIZATION * (-8 * mask + 4)
+        gradient = mask * (1 - mask) * (gradient + pvb_gradient_constant * cpx_term[0].real +
+                                        MASKRELAX_SIGMOID_STEEPNESS * discrete_penalty)
+        gradient = gradient * filter
         # print(gradient[1024, 1020:1030])
-
+        diff_target = image[2] - target_image
+        diff_image = image[0] - image[1]
+        step_size = self.design.determine_step_size_backtrack(num_iteration, filter, diff_target,
+                                                              diff_image, discrete_penalty)
+        self.design.update_convergence(diff_target, diff_image, discrete_penalty, epe_convergence, pvband)
+        self.design.keep_best_result(mask)
+        print("obj_convergence:", self.design.m_obj_convergence[0])
+        # print(step_size[1024, 1020:1030])
 
 def check_equal_image(cpp_file, py_image):
     '''
@@ -190,27 +184,23 @@ if __name__ == "__main__":
                    }
 
     # init design file and init params
-    test_design = Design("../benchmarks/M1_test1" + ".glp")
-    test_opc = OPC(test_design, hammer=1, sraf=0)
-    test_opc.run()
+    m1_test = Design("../benchmarks/M1_test1" + ".glp")
+    test_design = OPC(m1_test, hammer=1, sraf=0)
+    test_design.run()
     # init the gradient block
-    gradient = GradientBlock(opt_kernels, test_opc.m_targetImage, test_opc.m_epe_weight)
+    gradient = GradientBlock(opt_kernels, test_design)
     # calculate the simulated image of the init_params
     start = time.time()
-    for i in range(10):
-        gradient(test_opc.m_params)
+    image = gradient(test_design.m_params, num_iteration=1)
     end = time.time()
     print(end-start)
-    # outer_image = write_image_file(gradient.m_image[0], MAX_DOSE)
-    # inner_image = write_image_file(gradient.m_image[1], MIN_DOSE)
-    # nominal_image = write_image_file(gradient.m_image[2], NOMINAL_DOSE)
 
     # check_equal_image("/Users/zhubinwu/research/opc-hsd/cuilt/build/pixel_statistics.txt",nominal_image[:,:,2])
-    # plt.imshow(write_image_file(gradient.m_image[0], MAX_DOSE))
+    # plt.imshow(write_image_file(image[0], MAX_DOSE))
     # plt.savefig("outer_image_iter1.png")
     # plt.clf()
-    # plt.imshow(write_image_file(gradient.m_image[1], MIN_DOSE))
+    # plt.imshow(write_image_file(image[1], MIN_DOSE))
     # plt.savefig("inner_image_iter1.png")
     # plt.clf()
-    # plt.imshow(write_image_file(gradient.m_image[2], NOMINAL_DOSE))
+    # plt.imshow(write_image_file(image[2], NOMINAL_DOSE))
     # plt.savefig("nominal_image_iter1.png")
