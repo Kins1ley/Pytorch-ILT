@@ -72,14 +72,8 @@ class DumpKernel(object):
         scales = torch.sqrt(self.scales)
         self.scales = torch.tensor([1], dtype=torch.float64).to(device)
         combo_kernel = torch.zeros([self.knx, self.kny], dtype=torch.complex128).to(device)
-        # for i in range(self.combo_num):
-        #     combo_kernel += scales[i] * self.kernels[:, :, i]
-        # print(combo_kernel[13, 12])
-        # self.kernels = combo_kernel
-        kernels = self.kernels.permute(2, 0, 1)
-        scales = scales[:self.combo_num].unsqueeze(1).unsqueeze(2)
-        combo_kernel = torch.sum(scales * kernels[:self.combo_num, :, :], dim=0).unsqueeze(2)
-        # print(combo_kernel.size())
+        for i in range(self.combo_num):
+            combo_kernel += scales[i] * self.kernels[:, :, i]
         self.kernels = combo_kernel
 
 if __name__ == "__main__":
