@@ -7,6 +7,7 @@ from .constant import TARGET_INTENSITY
 from .constant import MIN_EPE_CHECK_LENGTH, EPE_CHECK_INTERVAL, EPE_CHECK_START_INTERVAL
 from .epe_sample import EpeSample
 from ilt.constant import device
+from ilt.logger import logger
 from shapes import Coordinate, Polygon
 
 class EpeChecker(object):
@@ -18,7 +19,7 @@ class EpeChecker(object):
         self.m_num_epe_out = 0
         self.m_polygons = None
         self.m_num_true_polygons = 0
-        self.m_bimage = torch.zeros([EPE_TILE_Y, EPE_TILE_X], dtype=torch.int8).to(device)
+        self.m_bimage = torch.zeros([EPE_TILE_Y, EPE_TILE_X]).to(device)
         self.m_samples = []
         self.m_violations = []
 
@@ -155,12 +156,16 @@ class EpeChecker(object):
             self.m_num_epe_out += 1
 
     def run(self, image):
+        self.m_violations = []
+        self.m_num_epe_in = 0
+        self.m_num_epe_out = 0
         HORIZONTAL = EpeChecker.orient_t["HORIZONTAL"]
         VERTICAL = EpeChecker.orient_t["VERTICAL"]
         if not self.m_valid:
             print("must set design before checking EPE")
+        self.m_bimage = torch.zeros([EPE_TILE_Y, EPE_TILE_X]).to(device)
         self.m_bimage[image > TARGET_INTENSITY] = 1
-        filter = torch.zeros([EPE_TILE_Y, EPE_TILE_X], dtype=torch.int8).to(device)
+        filter = torch.zeros([EPE_TILE_Y, EPE_TILE_X]).to(device)
         filter[EPE_OFFSET_Y : EPE_TILE_END_Y, EPE_OFFSET_X : EPE_TILE_END_X] = 1
         self.m_bimage = self.m_bimage * filter
         for polygon in self.m_polygons:

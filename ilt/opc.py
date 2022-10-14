@@ -19,6 +19,7 @@ from hammer import Hammer
 from sraf import Sraf
 from utils import is_pixel_on
 from eval import EpeChecker
+from logger import logger
 
 
 class OPC(object):
@@ -142,18 +143,26 @@ class OPC(object):
         # todo: test the correctness
         if num_iteration == 1:
             self.m_step_size = OPC_INITIAL_STEP_SIZE * filter
-            self.m_pre_obj_value = self.calculate_pixel_obj_value(diff_target, diff_image, discrete_penalty)
+            self.m_pre_obj_value = self.calculate_pixel_obj_value(diff_target, diff_image, discrete_penalty) * filter
         else:
-            count_jump = torch.sum(self.m_step_size < OPC_JUMP_STEP_THRESHOLD)
-            self.m_step_size[self.m_step_size < OPC_JUMP_STEP_THRESHOLD] = OPC_JUMP_STEP_SIZE
-            self.m_step_size *= filter
+            small_step_mask = (self.m_step_size < OPC_JUMP_STEP_THRESHOLD)
+            # count_jump = torch.sum(small_step_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X])
+            update_step_size = self.m_step_size
+            update_step_size[small_step_mask] = OPC_JUMP_STEP_SIZE
+
+            large_step_mask = (self.m_step_size >= OPC_JUMP_STEP_THRESHOLD)
             cur_obj_value = self.calculate_pixel_obj_value(diff_target, diff_image, discrete_penalty)
-            count_reduce = torch.sum(self.m_step_size[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X]
-                                 - cur_obj_value[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] < 0)
-            self.m_step_size[self.m_pre_obj_value - cur_obj_value < 0] *= GRADIENT_DESCENT_BETA
-            self.m_step_size *= filter
-            self.m_pre_obj_value = cur_obj_value
-            print("{} step jumped; {} stepsize reduced".format(count_jump, count_reduce))
+
+            negative_optimization_mask = torch.logical_and(large_step_mask, self.m_pre_obj_value - cur_obj_value < 0)
+            # count_reduce = torch.sum(negative_optimization_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X])
+            update_step_size[negative_optimization_mask] *= GRADIENT_DESCENT_BETA
+
+            self.m_pre_obj_value[large_step_mask] = cur_obj_value[large_step_mask]
+            self.m_pre_obj_value *= filter
+            self.m_step_size = update_step_size * filter
+
+            # print("countJump {} stepsize jumpped; {} stepsize reduced".format(count_jump, count_reduce))
+
         return self.m_step_size
 
     def calculate_pixel_obj_value(self, diff_target, diff_image, discrete_penalty):
