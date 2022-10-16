@@ -1,2 +1,2 @@
 from .constant import *
-from .logger import logger
+from .logger import get_logger

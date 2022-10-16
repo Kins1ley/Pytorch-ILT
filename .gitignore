@@ -9,3 +9,6 @@ ilt/init_add_sraf_mask
 ilt/*.png
 ilt/utils/__pycache__/
 */.DS_Store
+.DS_Store
+unittest/.vscode/
+ilt/check_image

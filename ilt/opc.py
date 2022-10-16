@@ -7,7 +7,7 @@ import time
 
 from shapes import Design
 from shapes import Rect, Polygon
-from constant import OPC_TILE_X, OPC_TILE_Y
+from constant import OPC_TILE_X, OPC_TILE_Y, OPC_TILE_SIZE
 from constant import MASK_TILE_END_X, MASK_TILE_END_Y, MASKRELAX_SIGMOID_STEEPNESS, MASK_PRINTABLE_THRESHOLD
 from constant import LITHOSIM_OFFSET
 from constant import OPC_INITIAL_STEP_SIZE, OPC_JUMP_STEP_SIZE, OPC_JUMP_STEP_THRESHOLD
@@ -15,12 +15,12 @@ from constant import GRADIENT_DESCENT_ALPHA, GRADIENT_DESCENT_BETA
 from constant import ZERO_ERROR, WEIGHT_EPE_REGION
 from constant import device
 from constant import WEIGHT_REGULARIZATION
+from constant import GRADIENT_DESCENT_STOP_CRITERIA, OPC_ITERATION_THRESHOLD
 from hammer import Hammer
 from sraf import Sraf
 from utils import is_pixel_on
 from eval import EpeChecker
-from logger import logger
-
+from logger import get_logger
 
 class OPC(object):
 
@@ -37,7 +37,10 @@ class OPC(object):
         self.m_mask = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
         # P matrix
         self.m_params = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
-
+        # filter
+        self.bmask = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
+        self.filter = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
+        self.filter[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] = 1
         # EPE checker setting
         self.m_epe_checker = EpeChecker()
         self.m_epe_checker.set_design(self.m_design)
@@ -48,7 +51,9 @@ class OPC(object):
         self.m_pre_obj_value = torch.zeros([OPC_TILE_Y, OPC_TILE_X], dtype=torch.float64, device=device)
         self.m_score_convergence = []
         self.m_obj_convergence = []
-        self.m_best_mask = []
+        self.m_best_mask = None
+        self.m_num_final_iteration = 0
+        self.exit_flag = False
 
     def rect2matrix(self, origin_x, origin_y):
         rects = self.m_design.rects
@@ -103,7 +108,10 @@ class OPC(object):
             self.m_mask = sraf_mask.m_mask
 
     def update_mask(self):
-        self.m_mask = torch.sigmoid(MASKRELAX_SIGMOID_STEEPNESS * self.m_params)
+        self.m_mask = torch.sigmoid(MASKRELAX_SIGMOID_STEEPNESS * self.m_params) * self.filter
+
+    def binary_mask(self):
+        self.bmask[self.m_mask >= MASK_PRINTABLE_THRESHOLD] = 1
 
     def initialize_params(self):
         temp_params = torch.ones([MASK_TILE_END_Y-LITHOSIM_OFFSET,
@@ -134,16 +142,16 @@ class OPC(object):
             #     for x in range(OPC_TILE_X):
             #         self.m_epe_weight[y, x] = 1
 
-    def determine_const_step_size(self, num_iteration, filter):
+    def determine_const_step_size(self, num_iteration):
         # todo: test the correctness
-        step_size = OPC_INITIAL_STEP_SIZE * filter
+        step_size = OPC_INITIAL_STEP_SIZE * self.filter
         return step_size
 
-    def determine_step_size_backtrack(self, num_iteration, filter, diff_target, diff_image, discrete_penalty):
+    def determine_step_size_backtrack(self, num_iteration, diff_target, diff_image, discrete_penalty):
         # todo: test the correctness
         if num_iteration == 1:
-            self.m_step_size = OPC_INITIAL_STEP_SIZE * filter
-            self.m_pre_obj_value = self.calculate_pixel_obj_value(diff_target, diff_image, discrete_penalty) * filter
+            self.m_step_size = OPC_INITIAL_STEP_SIZE * self.filter
+            self.m_pre_obj_value = self.calculate_pixel_obj_value(diff_target, diff_image, discrete_penalty) * self.filter
         else:
             small_step_mask = (self.m_step_size < OPC_JUMP_STEP_THRESHOLD)
             # count_jump = torch.sum(small_step_mask[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X])
@@ -158,8 +166,8 @@ class OPC(object):
             update_step_size[negative_optimization_mask] *= GRADIENT_DESCENT_BETA
 
             self.m_pre_obj_value[large_step_mask] = cur_obj_value[large_step_mask]
-            self.m_pre_obj_value *= filter
-            self.m_step_size = update_step_size * filter
+            self.m_pre_obj_value *= self.filter
+            self.m_step_size = update_step_size * self.filter
 
             # print("countJump {} stepsize jumpped; {} stepsize reduced".format(count_jump, count_reduce))
 
@@ -183,7 +191,18 @@ class OPC(object):
         cur_score = self.m_score_convergence[-1]
         if cur_score.to(torch.float64) < self.m_min_score:
             self.m_min_score = cur_score
-            self.m_best_mask.append(cur_mask)
+            self.m_best_mask = cur_mask
+
+    def restore_best_result(self):
+        cur_score = self.m_score_convergence[-1]
+        if cur_score.to(torch.float64) > self.m_min_score:
+            self.m_mask = self.m_best_mask
+
+    def exit_iteration(self, gradient, num_iteration):
+        self.m_num_final_iteration = num_iteration
+        mse = torch.sqrt(torch.sum(torch.pow(gradient, 2)) / OPC_TILE_SIZE)
+        self.exit_flag = (mse < GRADIENT_DESCENT_STOP_CRITERIA)
+
 
 if __name__ == "__main__":
     # matplotlib.use('TkAgg')

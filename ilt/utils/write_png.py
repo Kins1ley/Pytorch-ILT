@@ -7,7 +7,7 @@ def write_image_file(image, dose, sizex=2048, sizey=2048):
     tempimg = torch.zeros([sizey, sizex], dtype=torch.int64)
     pngimg = torch.zeros([sizey, sizex, 4], dtype=torch.int64)
     tempimg[image >= TARGET_INTENSITY] = 252
-    tempimg[image < TARGET_INTENSITY] = 0
+    # tempimg[image < TARGET_INTENSITY] = 0
     if dose == 1.00:
         pngimg[:, :, 0] = 0
         pngimg[:, :, 1] = pngimg[:, :, 2] = tempimg

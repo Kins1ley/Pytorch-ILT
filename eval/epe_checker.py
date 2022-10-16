@@ -1,4 +1,5 @@
 import torch
+import logging
 from .constant import EPE_TILE_X, EPE_TILE_Y
 from .constant import EPE_TILE_END_X, EPE_TILE_END_Y
 from .constant import EPE_OFFSET_X, EPE_OFFSET_Y
@@ -7,7 +8,7 @@ from .constant import TARGET_INTENSITY
 from .constant import MIN_EPE_CHECK_LENGTH, EPE_CHECK_INTERVAL, EPE_CHECK_START_INTERVAL
 from .epe_sample import EpeSample
 from ilt.constant import device
-from ilt.logger import logger
+from ilt.logger import get_logger
 from shapes import Coordinate, Polygon
 
 class EpeChecker(object):
@@ -22,6 +23,7 @@ class EpeChecker(object):
         self.m_bimage = torch.zeros([EPE_TILE_Y, EPE_TILE_X]).to(device)
         self.m_samples = []
         self.m_violations = []
+        self.logger = get_logger(__name__)
 
     def set_design(self, design):
         self.m_valid = True
@@ -43,7 +45,7 @@ class EpeChecker(object):
 
     def set_epe_safe_region(self, epe_weight, constraint):
         if not self.m_valid:
-            print("must set design before checking EPE")
+            self.logger.debug("must set design before checking EPE")
         # epe_weight = torch.zeros([EPE_TILE_Y, EPE_TILE_X], dtype=torch.float64)
         for polygon in self.m_polygons:
             points = polygon.points
@@ -108,7 +110,7 @@ class EpeChecker(object):
 
                 pt1 = pt2
 
-        print("Total number of EPE samples {}".format(str(len(self.m_samples))))
+        self.logger.debug("Total number of EPE samples {}".format(str(len(self.m_samples))))
         return self.m_samples
 
     def determine_check_direction(self, polygon, x, y, edge_orient):
@@ -162,7 +164,7 @@ class EpeChecker(object):
         HORIZONTAL = EpeChecker.orient_t["HORIZONTAL"]
         VERTICAL = EpeChecker.orient_t["VERTICAL"]
         if not self.m_valid:
-            print("must set design before checking EPE")
+            self.logger.debug("must set design before checking EPE")
         self.m_bimage = torch.zeros([EPE_TILE_Y, EPE_TILE_X]).to(device)
         self.m_bimage[image > TARGET_INTENSITY] = 1
         filter = torch.zeros([EPE_TILE_Y, EPE_TILE_X]).to(device)
@@ -204,5 +206,5 @@ class EpeChecker(object):
                             self.check(pt1.x, y, direction)
                 pt1 = pt2
 
-        print("Total {} EPE violations: {} inner and {} outer".format(len(self.m_violations), self.m_num_epe_in, self.m_num_epe_out))
+        self.logger.debug("Total {} EPE violations: {} inner and {} outer".format(len(self.m_violations), self.m_num_epe_in, self.m_num_epe_out))
         return len(self.m_violations)

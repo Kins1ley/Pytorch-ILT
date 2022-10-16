@@ -41,7 +41,7 @@ class Simulator(object):
         temp = self.shift(torch.fft.ifft2(temp, norm="forward"))
         if kernel_level == 1:
             return temp[0]
-        elif kernel_level == 15:
+        elif kernel_level == 15 or kernel_level == 24:
             scale = scale[:kernel_num].unsqueeze(1).unsqueeze(2)
             mul_fft = torch.sum(scale * torch.pow(torch.abs(temp), 2), dim=0).to(device)
             return mul_fft

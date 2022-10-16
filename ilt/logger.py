@@ -1,9 +1,21 @@
 import logging
 
-# logging setting
-logger = logging.getLogger("__main__")
-logger.setLevel(logging.INFO)
-console_handler = logging.StreamHandler()
-logger.addHandler(console_handler)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(formatter)
+def get_logger(name):
+    logger = logging.getLogger(name)
+    if not logger.handlers:
+        # Prevent logging from propagating to the root logger
+        # logger.propagate = 0
+        console = logging.StreamHandler()
+        logger.addHandler(console)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
+        console.setFormatter(formatter)
+        # logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.INFO)
+    return logger
+
+
+if __name__ == "__main__":
+    logger = get_logger(__name__)
+    # logger.setLevel(logging.DEBUG)
+    logger.info("info")
+    logger.debug("debug")
