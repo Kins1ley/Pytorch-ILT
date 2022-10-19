@@ -130,6 +130,7 @@ class GradientBlock(nn.Module):
         discrete_penalty = WEIGHT_REGULARIZATION * (-8 * mask + 4)
         gradient = mask * (1 - mask) * (gradient + pvb_gradient_constant * cpx_term[0].real +
                                         MASKRELAX_SIGMOID_STEEPNESS * discrete_penalty) * self.filter
+        # gradient = mask * (1-mask) * gradient
         diff_target = image[2] - self.target_image
         diff_image = image[0] - image[1]
         step_size = self.design.determine_step_size_backtrack(num_iteration, diff_target,

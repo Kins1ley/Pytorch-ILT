@@ -10,7 +10,7 @@ def get_logger(name):
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
         console.setFormatter(formatter)
         # logger.setLevel(logging.DEBUG)
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.DEBUG)
     return logger
 
 
