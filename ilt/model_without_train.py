@@ -56,13 +56,16 @@ class GradientBlock(nn.Module):
         logger.debug("pvband before gradient descent in iteration {} : {}".format(num_iteration, pvband))
         # start = time.time()
         epe_convergence = self.design.m_epe_checker.run(image[2])
+        logger.debug("epe before gradient descent in iteration {} : {}".format(num_iteration, epe_convergence))
         # end = time.time()
         # print("epe check time", end-start)
 
         image[0] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[0] - TARGET_INTENSITY))
         image[1] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[1] - TARGET_INTENSITY))
         image[2] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[2] - TARGET_INTENSITY))
-
+        criterion = nn.MSELoss(reduction="sum")
+        loss = criterion(image[2], self.target_image)
+        logger.debug("loss: {}".format(loss.item()))
         # m_term[0]: (Znom - Zt)^3 * Znom * (1-Znom)
         term[0] = torch.pow(image[2] - self.target_image, 3) * image[2] * (1 - image[2])
 
@@ -128,6 +131,8 @@ class GradientBlock(nn.Module):
 
         pvb_gradient_constant = WEIGHT_PVBAND * 2 * PHOTORISIST_SIGMOID_STEEPNESS * MASKRELAX_SIGMOID_STEEPNESS
         discrete_penalty = WEIGHT_REGULARIZATION * (-8 * mask + 4)
+        # gradient = mask * (1 - mask) * (gradient + pvb_gradient_constant * cpx_term[0].real +
+        #                                 MASKRELAX_SIGMOID_STEEPNESS * discrete_penalty) * self.filter
         gradient = mask * (1 - mask) * (gradient + pvb_gradient_constant * cpx_term[0].real +
                                         MASKRELAX_SIGMOID_STEEPNESS * discrete_penalty) * self.filter
         # gradient = mask * (1-mask) * gradient
@@ -135,11 +140,13 @@ class GradientBlock(nn.Module):
         diff_image = image[0] - image[1]
         step_size = self.design.determine_step_size_backtrack(num_iteration, diff_target,
                                                               diff_image, discrete_penalty)
+        # step_size = self.design.determine_const_step_size(num_iteration)
         self.design.update_convergence(diff_target, diff_image, discrete_penalty, epe_convergence, pvband)
         self.design.keep_best_result(mask)
         params[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] -= \
             step_size[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] * \
             gradient[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X]
+        # params -= step_size * gradient
         self.design.exit_iteration(gradient, num_iteration)
         # return params
         # maxg = torch.max(gradient)
@@ -153,6 +160,7 @@ class GradientBlock(nn.Module):
 def ilt(opc_kernels, design, update_block):
     # init the gradient block
     # update_block = GradientBlock(opc_kernels, design)
+    # OPC_ITERATION_THRESHOLD = 2
     for num_iteration in range(1, OPC_ITERATION_THRESHOLD + 1):
         update_block(design.m_params, num_iteration)
         if design.exit_flag:
@@ -174,7 +182,6 @@ def ilt(opc_kernels, design, update_block):
     image[0] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[0] - TARGET_INTENSITY))
     image[1] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[1] - TARGET_INTENSITY))
     image[2] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[2] - TARGET_INTENSITY))
-
     discrete_penalty = WEIGHT_REGULARIZATION * (-8 * test_design.m_mask + 4)
     diff_target = image[2] - test_design.m_target_image
     diff_image = image[0] - image[1]
@@ -203,7 +210,7 @@ def draw_final(design, update_block):
 
 if __name__ == "__main__":
     # logging setting
-    logger = get_logger(__name__)
+    # logger = get_logger(__name__)
     torch.set_printoptions(precision=7)
     # kernel setting
     if platform.system() == "Darwin":
@@ -223,17 +230,20 @@ if __name__ == "__main__":
                                               combo=combo_flag)}
     # init design file and init params
     # start = time.time()
-    m1_test = Design("../benchmarks/M1_test1" + ".glp")
+    # for i in range(1, 11):
+    i = 10
+    logger = get_logger(__name__, "experiment/case" + str(i) + ".txt")
+    m1_test = Design("../benchmarks/M1_test" + str(i) + ".glp")
     test_design = OPC(m1_test, hammer=1, sraf=0)
     update_block = GradientBlock(opc_kernels, test_design)
     logger.info("start opc")
     test_design.run()
-    start = time.time()
+    # start = time.time()
     ilt(opc_kernels, test_design, update_block)
-    end = time.time()
-    logger.info("ilt time {}".format(end - start))
-    # print("ilt time {}".format(end - start))
-    draw_final(test_design, update_block)
+    # end = time.time()
+    # logger.info("ilt time {}".format(end - start))
+    # # print("ilt time {}".format(end - start))
+    # draw_final(test_design, update_block)
     # print(end-start)
     # check_equal_image("/Users/zhubinwu/research/opc-hsd/cuilt/build/pixel_statistics.txt",nominal_image[:,:,2])
     # plt.imshow(write_image_file(image[0], MAX_DOSE))

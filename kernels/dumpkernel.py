@@ -74,7 +74,7 @@ class DumpKernel(object):
         combo_kernel = torch.zeros([self.knx, self.kny], dtype=torch.complex128).to(device)
         for i in range(self.combo_num):
             combo_kernel += scales[i] * self.kernels[:, :, i]
-        self.kernels = combo_kernel
+        self.kernels = combo_kernel.unsqueeze(2)
 
 if __name__ == "__main__":
     # import os

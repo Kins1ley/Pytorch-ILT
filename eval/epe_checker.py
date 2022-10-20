@@ -23,7 +23,7 @@ class EpeChecker(object):
         self.m_bimage = torch.zeros([EPE_TILE_Y, EPE_TILE_X]).to(device)
         self.m_samples = []
         self.m_violations = []
-        self.logger = get_logger(__name__)
+        # self.logger = get_logger(__name__)
 
     def set_design(self, design):
         self.m_valid = True
@@ -110,7 +110,7 @@ class EpeChecker(object):
 
                 pt1 = pt2
 
-        self.logger.debug("Total number of EPE samples {}".format(str(len(self.m_samples))))
+        # self.logger.debug("Total number of EPE samples {}".format(str(len(self.m_samples))))
         return self.m_samples
 
     def determine_check_direction(self, polygon, x, y, edge_orient):
@@ -206,5 +206,5 @@ class EpeChecker(object):
                             self.check(pt1.x, y, direction)
                 pt1 = pt2
 
-        self.logger.debug("Total {} EPE violations: {} inner and {} outer".format(len(self.m_violations), self.m_num_epe_in, self.m_num_epe_out))
+        # self.logger.debug("Total {} EPE violations: {} inner and {} outer".format(len(self.m_violations), self.m_num_epe_in, self.m_num_epe_out))
         return len(self.m_violations)

@@ -62,6 +62,10 @@ if __name__ == "__main__":
                                                     combo=combo_flag)}
     end = time.time()
     print(end-start)
+    print(opt_kernels["focus"].kernels.size())
+    print(opt_kernels["focus"].scales.size())
+    print(combo_kernels["combo focus"].kernels.size())
+    print(combo_kernels["combo focus"].scales.size())
     # opt_kernels_gt = {"focus": DumpKernel(35, 35), "defocus": DumpKernel(35, 35, defocus=defocus_flag),
     #                "CT focus": DumpKernel(35, 35, conjuncture=conjuncture_flag),
     #                "CT defocus": DumpKernel(35, 35, defocus=defocus_flag, conjuncture=conjuncture_flag)}
