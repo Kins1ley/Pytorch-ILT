@@ -1,0 +1,7 @@
+ pvband = []
+
+       data_results = f.readlines()
+1])
+
+
+           f.write(str(loss) + "\n")

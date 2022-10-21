@@ -1,0 +1,8 @@
+ase_results = sorted(os.listdir("."))
+ epe = []
+       losses = []
+
+)
+1])
+
+

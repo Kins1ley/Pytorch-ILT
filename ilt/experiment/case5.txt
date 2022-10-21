@@ -1,84 +1,85 @@
-2022-10-20 11:58:43,578 - __main__ - start opc
-2022-10-20 11:58:43,693 - __main__ - Iteration 1
-2022-10-20 11:58:43,918 - __main__ - pvband before gradient descent in iteration 1 : 64158
-2022-10-20 11:58:43,939 - __main__ - epe before gradient descent in iteration 1 : 89
-2022-10-20 11:58:43,941 - __main__ - loss: 90339.98859092676
-2022-10-20 11:58:43,984 - __main__ - Iteration 2
-2022-10-20 11:58:44,138 - __main__ - pvband before gradient descent in iteration 2 : 65062
-2022-10-20 11:58:44,179 - __main__ - epe before gradient descent in iteration 2 : 60
-2022-10-20 11:58:44,181 - __main__ - loss: 74213.75527631858
-2022-10-20 11:58:44,226 - __main__ - Iteration 3
-2022-10-20 11:58:44,385 - __main__ - pvband before gradient descent in iteration 3 : 47009
-2022-10-20 11:58:44,410 - __main__ - epe before gradient descent in iteration 3 : 71
-2022-10-20 11:58:44,412 - __main__ - loss: 83743.49262019974
-2022-10-20 11:58:44,457 - __main__ - Iteration 4
-2022-10-20 11:58:44,595 - __main__ - pvband before gradient descent in iteration 4 : 56811
-2022-10-20 11:58:44,618 - __main__ - epe before gradient descent in iteration 4 : 36
-2022-10-20 11:58:44,620 - __main__ - loss: 57092.3600775026
-2022-10-20 11:58:44,665 - __main__ - Iteration 5
-2022-10-20 11:58:44,807 - __main__ - pvband before gradient descent in iteration 5 : 57938
-2022-10-20 11:58:44,829 - __main__ - epe before gradient descent in iteration 5 : 35
-2022-10-20 11:58:44,831 - __main__ - loss: 53076.95089740853
-2022-10-20 11:58:44,876 - __main__ - Iteration 6
-2022-10-20 11:58:45,011 - __main__ - pvband before gradient descent in iteration 6 : 54765
-2022-10-20 11:58:45,031 - __main__ - epe before gradient descent in iteration 6 : 22
-2022-10-20 11:58:45,033 - __main__ - loss: 45842.92898511607
-2022-10-20 11:58:45,078 - __main__ - Iteration 7
-2022-10-20 11:58:45,214 - __main__ - pvband before gradient descent in iteration 7 : 54622
-2022-10-20 11:58:45,247 - __main__ - epe before gradient descent in iteration 7 : 19
-2022-10-20 11:58:45,260 - __main__ - loss: 44127.152453136165
-2022-10-20 11:58:45,305 - __main__ - Iteration 8
-2022-10-20 11:58:45,442 - __main__ - pvband before gradient descent in iteration 8 : 55478
-2022-10-20 11:58:45,461 - __main__ - epe before gradient descent in iteration 8 : 13
-2022-10-20 11:58:45,463 - __main__ - loss: 41308.46637004128
-2022-10-20 11:58:45,508 - __main__ - Iteration 9
-2022-10-20 11:58:45,644 - __main__ - pvband before gradient descent in iteration 9 : 56641
-2022-10-20 11:58:45,674 - __main__ - epe before gradient descent in iteration 9 : 14
-2022-10-20 11:58:45,676 - __main__ - loss: 40413.78065170083
-2022-10-20 11:58:45,721 - __main__ - Iteration 10
-2022-10-20 11:58:45,855 - __main__ - pvband before gradient descent in iteration 10 : 57511
-2022-10-20 11:58:45,875 - __main__ - epe before gradient descent in iteration 10 : 12
-2022-10-20 11:58:45,877 - __main__ - loss: 39441.80058919382
-2022-10-20 11:58:45,922 - __main__ - Iteration 11
-2022-10-20 11:58:46,056 - __main__ - pvband before gradient descent in iteration 11 : 58093
-2022-10-20 11:58:46,078 - __main__ - epe before gradient descent in iteration 11 : 13
-2022-10-20 11:58:46,080 - __main__ - loss: 38641.43969908293
-2022-10-20 11:58:46,125 - __main__ - Iteration 12
-2022-10-20 11:58:46,286 - __main__ - pvband before gradient descent in iteration 12 : 58452
-2022-10-20 11:58:46,308 - __main__ - epe before gradient descent in iteration 12 : 12
-2022-10-20 11:58:46,310 - __main__ - loss: 38026.74610224736
-2022-10-20 11:58:46,355 - __main__ - Iteration 13
-2022-10-20 11:58:46,492 - __main__ - pvband before gradient descent in iteration 13 : 58686
-2022-10-20 11:58:46,514 - __main__ - epe before gradient descent in iteration 13 : 11
-2022-10-20 11:58:46,516 - __main__ - loss: 37603.33321352007
-2022-10-20 11:58:46,560 - __main__ - Iteration 14
-2022-10-20 11:58:46,696 - __main__ - pvband before gradient descent in iteration 14 : 58966
-2022-10-20 11:58:46,716 - __main__ - epe before gradient descent in iteration 14 : 11
-2022-10-20 11:58:46,717 - __main__ - loss: 37219.74883557162
-2022-10-20 11:58:46,762 - __main__ - Iteration 15
-2022-10-20 11:58:46,898 - __main__ - pvband before gradient descent in iteration 15 : 59099
-2022-10-20 11:58:46,917 - __main__ - epe before gradient descent in iteration 15 : 11
-2022-10-20 11:58:46,919 - __main__ - loss: 36900.45482874828
-2022-10-20 11:58:46,964 - __main__ - Iteration 16
-2022-10-20 11:58:47,100 - __main__ - pvband before gradient descent in iteration 16 : 59244
-2022-10-20 11:58:47,119 - __main__ - epe before gradient descent in iteration 16 : 11
-2022-10-20 11:58:47,121 - __main__ - loss: 36642.79777588358
-2022-10-20 11:58:47,166 - __main__ - Iteration 17
-2022-10-20 11:58:47,302 - __main__ - pvband before gradient descent in iteration 17 : 59343
-2022-10-20 11:58:47,333 - __main__ - epe before gradient descent in iteration 17 : 11
-2022-10-20 11:58:47,334 - __main__ - loss: 36424.349010435704
-2022-10-20 11:58:47,379 - __main__ - Iteration 18
-2022-10-20 11:58:47,514 - __main__ - pvband before gradient descent in iteration 18 : 59443
-2022-10-20 11:58:47,534 - __main__ - epe before gradient descent in iteration 18 : 11
-2022-10-20 11:58:47,536 - __main__ - loss: 36179.82169458752
-2022-10-20 11:58:47,581 - __main__ - Iteration 19
-2022-10-20 11:58:47,717 - __main__ - pvband before gradient descent in iteration 19 : 59553
-2022-10-20 11:58:47,737 - __main__ - epe before gradient descent in iteration 19 : 11
-2022-10-20 11:58:47,739 - __main__ - loss: 35964.97132719872
-2022-10-20 11:58:47,783 - __main__ - Iteration 20
-2022-10-20 11:58:47,919 - __main__ - pvband before gradient descent in iteration 20 : 59696
-2022-10-20 11:58:47,939 - __main__ - epe before gradient descent in iteration 20 : 11
-2022-10-20 11:58:47,941 - __main__ - loss: 35765.211203809464
-2022-10-20 11:58:47,987 - __main__ - Check the final pvband and the EPE value
-2022-10-20 11:58:48,104 - __main__ - pvband after the whole iterations 59804
-2022-10-20 11:58:48,128 - __main__ - Final Object Value: 28386.698701319023
+2022-10-20 15:46:16,578 - __main__ - start opc
+2022-10-20 15:46:16,674 - __main__ - Iteration 1
+2022-10-20 15:46:16,913 - __main__ - pvband before gradient descent in iteration 1 : 64158
+2022-10-20 15:46:16,936 - __main__ - epe before gradient descent in iteration 1 : 89
+2022-10-20 15:46:16,938 - __main__ - loss: 90339.98859092676
+2022-10-20 15:46:16,981 - __main__ - Iteration 2
+2022-10-20 15:46:17,116 - __main__ - pvband before gradient descent in iteration 2 : 65062
+2022-10-20 15:46:17,139 - __main__ - epe before gradient descent in iteration 2 : 60
+2022-10-20 15:46:17,141 - __main__ - loss: 74213.75527631858
+2022-10-20 15:46:17,186 - __main__ - Iteration 3
+2022-10-20 15:46:17,323 - __main__ - pvband before gradient descent in iteration 3 : 47009
+2022-10-20 15:46:17,345 - __main__ - epe before gradient descent in iteration 3 : 71
+2022-10-20 15:46:17,347 - __main__ - loss: 83743.49262019974
+2022-10-20 15:46:17,392 - __main__ - Iteration 4
+2022-10-20 15:46:17,527 - __main__ - pvband before gradient descent in iteration 4 : 56811
+2022-10-20 15:46:17,551 - __main__ - epe before gradient descent in iteration 4 : 36
+2022-10-20 15:46:17,553 - __main__ - loss: 57092.3600775026
+2022-10-20 15:46:17,598 - __main__ - Iteration 5
+2022-10-20 15:46:17,736 - __main__ - pvband before gradient descent in iteration 5 : 57938
+2022-10-20 15:46:17,753 - __main__ - epe before gradient descent in iteration 5 : 35
+2022-10-20 15:46:17,755 - __main__ - loss: 53076.95089740853
+2022-10-20 15:46:17,800 - __main__ - Iteration 6
+2022-10-20 15:46:17,934 - __main__ - pvband before gradient descent in iteration 6 : 54765
+2022-10-20 15:46:17,951 - __main__ - epe before gradient descent in iteration 6 : 22
+2022-10-20 15:46:17,953 - __main__ - loss: 45842.92898511607
+2022-10-20 15:46:17,998 - __main__ - Iteration 7
+2022-10-20 15:46:18,131 - __main__ - pvband before gradient descent in iteration 7 : 54622
+2022-10-20 15:46:18,149 - __main__ - epe before gradient descent in iteration 7 : 19
+2022-10-20 15:46:18,150 - __main__ - loss: 44127.152453136165
+2022-10-20 15:46:18,195 - __main__ - Iteration 8
+2022-10-20 15:46:18,329 - __main__ - pvband before gradient descent in iteration 8 : 55478
+2022-10-20 15:46:18,346 - __main__ - epe before gradient descent in iteration 8 : 13
+2022-10-20 15:46:18,348 - __main__ - loss: 41308.46637004128
+2022-10-20 15:46:18,393 - __main__ - Iteration 9
+2022-10-20 15:46:18,526 - __main__ - pvband before gradient descent in iteration 9 : 56641
+2022-10-20 15:46:18,544 - __main__ - epe before gradient descent in iteration 9 : 14
+2022-10-20 15:46:18,545 - __main__ - loss: 40413.78065170083
+2022-10-20 15:46:18,590 - __main__ - Iteration 10
+2022-10-20 15:46:18,723 - __main__ - pvband before gradient descent in iteration 10 : 57511
+2022-10-20 15:46:18,741 - __main__ - epe before gradient descent in iteration 10 : 12
+2022-10-20 15:46:18,743 - __main__ - loss: 39441.80058919382
+2022-10-20 15:46:18,788 - __main__ - Iteration 11
+2022-10-20 15:46:18,920 - __main__ - pvband before gradient descent in iteration 11 : 58093
+2022-10-20 15:46:18,938 - __main__ - epe before gradient descent in iteration 11 : 13
+2022-10-20 15:46:18,940 - __main__ - loss: 38641.43969908293
+2022-10-20 15:46:18,985 - __main__ - Iteration 12
+2022-10-20 15:46:19,118 - __main__ - pvband before gradient descent in iteration 12 : 58452
+2022-10-20 15:46:19,136 - __main__ - epe before gradient descent in iteration 12 : 12
+2022-10-20 15:46:19,138 - __main__ - loss: 38026.74610224736
+2022-10-20 15:46:19,183 - __main__ - Iteration 13
+2022-10-20 15:46:19,315 - __main__ - pvband before gradient descent in iteration 13 : 58686
+2022-10-20 15:46:19,374 - __main__ - epe before gradient descent in iteration 13 : 11
+2022-10-20 15:46:19,376 - __main__ - loss: 37603.33321352007
+2022-10-20 15:46:19,421 - __main__ - Iteration 14
+2022-10-20 15:46:19,553 - __main__ - pvband before gradient descent in iteration 14 : 58966
+2022-10-20 15:46:19,571 - __main__ - epe before gradient descent in iteration 14 : 11
+2022-10-20 15:46:19,573 - __main__ - loss: 37219.74883557162
+2022-10-20 15:46:19,618 - __main__ - Iteration 15
+2022-10-20 15:46:19,751 - __main__ - pvband before gradient descent in iteration 15 : 59099
+2022-10-20 15:46:19,770 - __main__ - epe before gradient descent in iteration 15 : 11
+2022-10-20 15:46:19,772 - __main__ - loss: 36900.45482874828
+2022-10-20 15:46:19,817 - __main__ - Iteration 16
+2022-10-20 15:46:19,949 - __main__ - pvband before gradient descent in iteration 16 : 59244
+2022-10-20 15:46:19,968 - __main__ - epe before gradient descent in iteration 16 : 11
+2022-10-20 15:46:19,969 - __main__ - loss: 36642.79777588358
+2022-10-20 15:46:20,015 - __main__ - Iteration 17
+2022-10-20 15:46:20,148 - __main__ - pvband before gradient descent in iteration 17 : 59343
+2022-10-20 15:46:20,167 - __main__ - epe before gradient descent in iteration 17 : 11
+2022-10-20 15:46:20,168 - __main__ - loss: 36424.349010435704
+2022-10-20 15:46:20,214 - __main__ - Iteration 18
+2022-10-20 15:46:20,347 - __main__ - pvband before gradient descent in iteration 18 : 59443
+2022-10-20 15:46:20,365 - __main__ - epe before gradient descent in iteration 18 : 11
+2022-10-20 15:46:20,367 - __main__ - loss: 36179.82169458752
+2022-10-20 15:46:20,412 - __main__ - Iteration 19
+2022-10-20 15:46:20,546 - __main__ - pvband before gradient descent in iteration 19 : 59553
+2022-10-20 15:46:20,564 - __main__ - epe before gradient descent in iteration 19 : 11
+2022-10-20 15:46:20,566 - __main__ - loss: 35964.97132719872
+2022-10-20 15:46:20,611 - __main__ - Iteration 20
+2022-10-20 15:46:20,743 - __main__ - pvband before gradient descent in iteration 20 : 59696
+2022-10-20 15:46:20,769 - __main__ - epe before gradient descent in iteration 20 : 11
+2022-10-20 15:46:20,771 - __main__ - loss: 35765.211203809464
+2022-10-20 15:46:20,817 - __main__ - Check the final pvband and the EPE value
+2022-10-20 15:46:20,934 - __main__ - pvband after the whole iterations : 59804
+2022-10-20 15:46:20,952 - __main__ - epe after the whole iterations : 11
+2022-10-20 15:46:20,954 - __main__ - loss after the whole iterations : 35609.73193715157 

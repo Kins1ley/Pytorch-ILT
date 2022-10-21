@@ -59,13 +59,16 @@ class GradientBlock(nn.Module):
         logger.debug("epe before gradient descent in iteration {} : {}".format(num_iteration, epe_convergence))
         # end = time.time()
         # print("epe check time", end-start)
-
+        # nominal_bmask = torch.zeros(image[2].size(), dtype=torch.float64).to(device)
+        # nominal_bmask[image[2] > TARGET_INTENSITY] = 1
         image[0] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[0] - TARGET_INTENSITY))
         image[1] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[1] - TARGET_INTENSITY))
         image[2] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[2] - TARGET_INTENSITY))
         criterion = nn.MSELoss(reduction="sum")
         loss = criterion(image[2], self.target_image)
         logger.debug("loss: {}".format(loss.item()))
+        # loss1 = criterion(nominal_bmask, self.target_image)
+        # logger.debug("int loss: {}".format(loss1.item()))
         # m_term[0]: (Znom - Zt)^3 * Znom * (1-Znom)
         term[0] = torch.pow(image[2] - self.target_image, 3) * image[2] * (1 - image[2])
 
@@ -176,17 +179,26 @@ def ilt(opc_kernels, design, update_block):
                                                      opc_kernels["focus"].scales, NOMINAL_DOSE, 15)
     pvband = update_block.simulator.calculate_pvband(image[1], image[0])
     logger.debug("Check the final pvband and the EPE value")
-    logger.debug("pvband after the whole iterations {}".format(pvband))
+    logger.debug("pvband after the whole iterations : {}".format(pvband))
     # start = time.time()
     epe_convergence = test_design.m_epe_checker.run(image[2])
+    logger.debug("epe after the whole iterations : {}".format(epe_convergence))
+    criterion = nn.MSELoss(reduction="sum")
+    # nominal_mask = torch.zeros(image[2].size(), dtype=torch.float64).to(device)
+    # nominal_mask[image[2] > TARGET_INTENSITY] = 1
     image[0] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[0] - TARGET_INTENSITY))
     image[1] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[1] - TARGET_INTENSITY))
     image[2] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[2] - TARGET_INTENSITY))
+    loss = criterion(image[2], test_design.m_target_image)
+    logger.debug("loss after the whole iterations : {} ".format(loss))
+    # loss1 = criterion(nominal_mask, test_design.m_target_image)
+    # logger.debug("loss after the whole iterations : {} ".format(loss1))
     discrete_penalty = WEIGHT_REGULARIZATION * (-8 * test_design.m_mask + 4)
     diff_target = image[2] - test_design.m_target_image
     diff_image = image[0] - image[1]
     test_design.update_convergence(diff_target, diff_image, discrete_penalty, epe_convergence, pvband)
-    logger.debug("Final Object Value: {}".format(test_design.m_obj_convergence[-1]))
+
+    # logger.debug("Final Object Value: {}".format(test_design.m_obj_convergence[-1]))
     test_design.restore_best_result()
 
 
@@ -231,7 +243,7 @@ if __name__ == "__main__":
     # init design file and init params
     # start = time.time()
     # for i in range(1, 11):
-    i = 10
+    i = 1
     logger = get_logger(__name__, "experiment/case" + str(i) + ".txt")
     m1_test = Design("../benchmarks/M1_test" + str(i) + ".glp")
     test_design = OPC(m1_test, hammer=1, sraf=0)
