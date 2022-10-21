@@ -1,11 +1,12 @@
 import logging
 
-def get_logger(name, file_name):
+def get_logger(name, file_name=None):
     logger = logging.getLogger(name)
     if not logger.handlers:
         # Prevent logging from propagating to the root logger
         # logger.propagate = 0
-        console = logging.FileHandler(file_name)
+        console = logging.StreamHandler()
+        # console = logging.FileHandler(file_name)
         logger.addHandler(console)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
         console.setFormatter(formatter)

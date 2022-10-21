@@ -1,0 +1,1292 @@
+(base) ➜  cuilt bash run.sh
+using Linux
+-- Found gflags  (include: /usr/include, library: /usr/lib/x86_64-linux-gnu/libgflags.so)
+-- Found glog    (include: /usr/include, library: /usr/lib/x86_64-linux-gnu/libglog.so)
+-- Found PROTOBUF Compiler: /usr/local/bin/protoc
+-- Host system: Linux-5.10.16.3-microsoft-standard-WSL2
+-- System processor: x86_64
+-- Cmake CXX compiler: /usr/bin/c++
+-- Cmake CXX compiler version: 9.4.0
+-- Cmake CXX compiler flags:  -Wall -O2 -D_DEBUG
+-- WITH_GPU is: OFF
+-- Installation directory: /home/zhubinwu/cuilt
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zhubinwu/cuilt/build
+[  4%] Running C++/Python protocol buffer compiler on /home/zhubinwu/cuilt/proto/cuilt.proto
+[  8%] Building CXX object CMakeFiles/iltproto.dir/proto/cuilt.pb.cc.o
+[ 13%] Linking CXX static library libiltproto.a
+[ 13%] Built target iltproto
+Scanning dependencies of target libcuilt
+[ 17%] Building CXX object CMakeFiles/libcuilt.dir/ilt/opc.cpp.o
+[ 21%] Building CXX object CMakeFiles/libcuilt.dir/io/io.cpp.o
+[ 26%] Linking CXX shared library liblibcuilt.so
+[ 91%] Built target libcuilt
+[ 95%] Linking CXX executable cuilt
+[100%] Built target cuilt
+ln: failed to create symbolic link 'Kernels/Kernels': File exists
+
+******************   CUILT   ********************
+*************************************************
+
+M1OPC(scale 0) = 86.943428
+M1OPC(scale 1) = 35.417973
+M1OPC(scale 2) = 35.407127
+M1OPC(scale 3) = 14.170837
+M1OPC(scale 4) = 11.240212
+M1OPC(scale 5) = 4.143778
+M1OPC(scale 6) = 4.142495
+M1OPC(scale 7) = 1.910848
+M1OPC(scale 8) = 1.716264
+M1OPC(scale 9) = 1.584437
+M1OPC(scale 10) = 1.505652
+M1OPC(scale 11) = 1.500406
+M1OPC(scale 12) = 1.466139
+M1OPC(scale 13) = 1.149518
+M1OPC(scale 14) = 1.149352
+M1OPC(scale 15) = 1.010004
+M1OPC(scale 16) = 0.991770
+M1OPC(scale 17) = 0.941917
+M1OPC(scale 18) = 0.941153
+M1OPC(scale 19) = 0.787160
+M1OPC(scale 20) = 0.565007
+M1OPC(scale 21) = 0.564228
+M1OPC(scale 22) = 0.490721
+M1OPC(scale 23) = 0.448742
+Kernels/M1OPC/fh0.bin (35 35 2 105565448 0)
+Kernel 0 should be 105565448 in file also
+Kernels/M1OPC/fh1.bin (35 35 2 105565448 0)
+Kernel 1 should be 105565448 in file also
+Kernels/M1OPC/fh2.bin (35 35 2 105565448 0)
+Kernel 2 should be 105565448 in file also
+Kernels/M1OPC/fh3.bin (35 35 2 105565448 0)
+Kernel 3 should be 105565448 in file also
+Kernels/M1OPC/fh4.bin (35 35 2 105565448 0)
+Kernel 4 should be 105565448 in file also
+Kernels/M1OPC/fh5.bin (35 35 2 105565448 0)
+Kernel 5 should be 105565448 in file also
+Kernels/M1OPC/fh6.bin (35 35 2 105565448 0)
+Kernel 6 should be 105565448 in file also
+Kernels/M1OPC/fh7.bin (35 35 2 105565448 0)
+Kernel 7 should be 105565448 in file also
+Kernels/M1OPC/fh8.bin (35 35 2 105565448 0)
+Kernel 8 should be 105565448 in file also
+Kernels/M1OPC/fh9.bin (35 35 2 105565448 0)
+Kernel 9 should be 105565448 in file also
+Kernels/M1OPC/fh10.bin (35 35 2 105565448 0)
+Kernel 10 should be 105565448 in file also
+Kernels/M1OPC/fh11.bin (35 35 2 105565448 0)
+Kernel 11 should be 105565448 in file also
+Kernels/M1OPC/fh12.bin (35 35 2 105565448 0)
+Kernel 12 should be 105565448 in file also
+Kernels/M1OPC/fh13.bin (35 35 2 105565448 0)
+Kernel 13 should be 105565448 in file also
+Kernels/M1OPC/fh14.bin (35 35 2 105565448 0)
+Kernel 14 should be 105565448 in file also
+Kernels/M1OPC/fh15.bin (35 35 2 105565448 0)
+Kernel 15 should be 105565448 in file also
+Kernels/M1OPC/fh16.bin (35 35 2 105565448 0)
+Kernel 16 should be 105565448 in file also
+Kernels/M1OPC/fh17.bin (35 35 2 105565448 0)
+Kernel 17 should be 105565448 in file also
+Kernels/M1OPC/fh18.bin (35 35 2 105565448 0)
+Kernel 18 should be 105565448 in file also
+Kernels/M1OPC/fh19.bin (35 35 2 105565448 0)
+Kernel 19 should be 105565448 in file also
+Kernels/M1OPC/fh20.bin (35 35 2 105565448 0)
+Kernel 20 should be 105565448 in file also
+Kernels/M1OPC/fh21.bin (35 35 2 105565448 0)
+Kernel 21 should be 105565448 in file also
+Kernels/M1OPC/fh22.bin (35 35 2 105565448 0)
+Kernel 22 should be 105565448 in file also
+Kernels/M1OPC/fh23.bin (35 35 2 105565448 0)
+Kernel 23 should be 105565448 in file also
+*Message*: received focus kernel data
+M1OPC(scale 0) = 83.156715
+M1OPC(scale 1) = 34.974804
+M1OPC(scale 2) = 34.963085
+M1OPC(scale 3) = 14.879087
+M1OPC(scale 4) = 11.032078
+M1OPC(scale 5) = 4.448975
+M1OPC(scale 6) = 4.447021
+M1OPC(scale 7) = 2.218136
+M1OPC(scale 8) = 1.612225
+M1OPC(scale 9) = 1.538630
+M1OPC(scale 10) = 1.406106
+M1OPC(scale 11) = 1.363298
+M1OPC(scale 12) = 1.356663
+M1OPC(scale 13) = 1.119907
+M1OPC(scale 14) = 1.119321
+M1OPC(scale 15) = 1.097257
+M1OPC(scale 16) = 0.951011
+M1OPC(scale 17) = 0.950398
+M1OPC(scale 18) = 0.828199
+M1OPC(scale 19) = 0.810574
+M1OPC(scale 20) = 0.573675
+M1OPC(scale 21) = 0.571789
+M1OPC(scale 22) = 0.485302
+M1OPC(scale 23) = 0.472674
+Kernels/M1OPC_def/fh0.bin (35 35 2 0 0)
+Kernels/M1OPC_def/fh1.bin (35 35 2 1 0)
+Kernels/M1OPC_def/fh2.bin (35 35 2 2 0)
+Kernels/M1OPC_def/fh3.bin (35 35 2 3 0)
+Kernels/M1OPC_def/fh4.bin (35 35 2 4 0)
+Kernels/M1OPC_def/fh5.bin (35 35 2 5 0)
+Kernels/M1OPC_def/fh6.bin (35 35 2 6 0)
+Kernels/M1OPC_def/fh7.bin (35 35 2 7 0)
+Kernels/M1OPC_def/fh8.bin (35 35 2 8 0)
+Kernels/M1OPC_def/fh9.bin (35 35 2 9 0)
+Kernels/M1OPC_def/fh10.bin (35 35 2 10 0)
+Kernels/M1OPC_def/fh11.bin (35 35 2 11 0)
+Kernels/M1OPC_def/fh12.bin (35 35 2 12 0)
+Kernels/M1OPC_def/fh13.bin (35 35 2 13 0)
+Kernels/M1OPC_def/fh14.bin (35 35 2 14 0)
+Kernels/M1OPC_def/fh15.bin (35 35 2 15 0)
+Kernels/M1OPC_def/fh16.bin (35 35 2 16 0)
+Kernels/M1OPC_def/fh17.bin (35 35 2 17 0)
+Kernels/M1OPC_def/fh18.bin (35 35 2 18 0)
+Kernels/M1OPC_def/fh19.bin (35 35 2 19 0)
+Kernels/M1OPC_def/fh20.bin (35 35 2 20 0)
+Kernels/M1OPC_def/fh21.bin (35 35 2 21 0)
+Kernels/M1OPC_def/fh22.bin (35 35 2 22 0)
+Kernels/M1OPC_def/fh23.bin (35 35 2 23 0)
+*Message*: received defocus kernel data
+9 Combo kernel loaded
+I1021 17:44:56.689785 10194 opc.cpp:122] Total Pattern Area: 229149
+I1021 17:44:56.691947 10194 opc.cpp:125] Starting OPC...
+[DEBUG]:Total number of EPE samples: 134
+I1021 17:44:56.705191 10194 opc.cpp:366] Gradient search iteration 1
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 110012
+[DEBUG]:Total 84 EPE violations: 84 inner and 0 outer
+I1021 17:45:22.180585 10194 opc.cpp:759] pvband before updating: 61524
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:45:30.792867 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:45:30.819656 10194 opc.cpp:384] Objective value before updating: 59291.9
+I1021 17:45:30.819710 10194 opc.cpp:385] EPE count: 84
+I1021 17:45:30.823129 10194 opc.cpp:398] maxg: 0.0247838, ming: -0.503982
+I1021 17:45:30.834048 10194 opc.cpp:549] gradient mse: 0.0880794
+I1021 17:45:30.834115 10194 opc.cpp:366] Gradient search iteration 2
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 87208
+[DEBUG]:Total 57 EPE violations: 57 inner and 0 outer
+I1021 17:45:55.198354 10194 opc.cpp:759] pvband before updating: 52419
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:46:03.389428 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:46:03.397732 10194 opc.cpp:1049] 0 stepsize jumpped; 433864 stepsize reduced.
+I1021 17:46:03.406554 10194 opc.cpp:384] Objective value before updating: 49565.7
+I1021 17:46:03.406610 10194 opc.cpp:385] EPE count: 57
+I1021 17:46:03.410041 10194 opc.cpp:398] maxg: 0.0312965, ming: -2.02503
+I1021 17:46:03.423233 10194 opc.cpp:549] gradient mse: 0.117066
+I1021 17:46:03.423295 10194 opc.cpp:366] Gradient search iteration 3
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 78465
+[DEBUG]:Total 54 EPE violations: 36 inner and 18 outer
+I1021 17:46:27.929442 10194 opc.cpp:759] pvband before updating: 40671
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:46:36.116639 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:46:36.132746 10194 opc.cpp:1049] 0 stepsize jumpped; 472462 stepsize reduced.
+I1021 17:46:36.144218 10194 opc.cpp:384] Objective value before updating: 44131
+I1021 17:46:36.144276 10194 opc.cpp:385] EPE count: 54
+I1021 17:46:36.147722 10194 opc.cpp:398] maxg: 2.46424, ming: -3.59876
+I1021 17:46:36.159061 10194 opc.cpp:549] gradient mse: 0.193235
+I1021 17:46:36.159109 10194 opc.cpp:366] Gradient search iteration 4
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 58532
+[DEBUG]:Total 25 EPE violations: 21 inner and 4 outer
+I1021 17:47:00.550436 10194 opc.cpp:759] pvband before updating: 44947
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:47:08.686719 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:47:08.696316 10194 opc.cpp:1049] 0 stepsize jumpped; 956265 stepsize reduced.
+I1021 17:47:08.704645 10194 opc.cpp:384] Objective value before updating: 35041.1
+I1021 17:47:08.704694 10194 opc.cpp:385] EPE count: 25
+I1021 17:47:08.708110 10194 opc.cpp:398] maxg: 2.48568, ming: -3.76615
+I1021 17:47:08.719408 10194 opc.cpp:549] gradient mse: 0.140766
+I1021 17:47:08.719444 10194 opc.cpp:366] Gradient search iteration 5
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 52163
+[DEBUG]:Total 24 EPE violations: 12 inner and 12 outer
+I1021 17:47:33.097177 10194 opc.cpp:759] pvband before updating: 42700
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:47:41.229563 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:47:41.238322 10194 opc.cpp:1049] 0 stepsize jumpped; 870429 stepsize reduced.
+I1021 17:47:41.246330 10194 opc.cpp:384] Objective value before updating: 31017.6
+I1021 17:47:41.246408 10194 opc.cpp:385] EPE count: 24
+I1021 17:47:41.250396 10194 opc.cpp:398] maxg: 2.1701, ming: -2.44825
+I1021 17:47:41.260799 10194 opc.cpp:549] gradient mse: 0.113374
+I1021 17:47:41.260831 10194 opc.cpp:366] Gradient search iteration 6
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 44855
+[DEBUG]:Total 17 EPE violations: 9 inner and 8 outer
+I1021 17:48:05.667129 10194 opc.cpp:759] pvband before updating: 43413
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:48:13.814986 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:48:13.823207 10194 opc.cpp:1049] 262702 stepsize jumpped; 827905 stepsize reduced.
+I1021 17:48:13.836071 10194 opc.cpp:384] Objective value before updating: 26542.2
+I1021 17:48:13.836131 10194 opc.cpp:385] EPE count: 17
+I1021 17:48:13.839736 10194 opc.cpp:398] maxg: 2.29271, ming: -1.95933
+I1021 17:48:13.852152 10194 opc.cpp:549] gradient mse: 0.0855265
+I1021 17:48:13.852219 10194 opc.cpp:366] Gradient search iteration 7
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 41081
+[DEBUG]:Total 12 EPE violations: 7 inner and 5 outer
+I1021 17:48:38.228312 10194 opc.cpp:759] pvband before updating: 43849
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:48:46.363556 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:48:46.379081 10194 opc.cpp:1049] 121604 stepsize jumpped; 1055238 stepsize reduced.
+I1021 17:48:46.387490 10194 opc.cpp:384] Objective value before updating: 24507
+I1021 17:48:46.387533 10194 opc.cpp:385] EPE count: 12
+I1021 17:48:46.390939 10194 opc.cpp:398] maxg: 1.40179, ming: -1.37262
+I1021 17:48:46.402683 10194 opc.cpp:549] gradient mse: 0.0618506
+I1021 17:48:46.402738 10194 opc.cpp:366] Gradient search iteration 8
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 36556
+[DEBUG]:Total 9 EPE violations: 7 inner and 2 outer
+I1021 17:49:10.765766 10194 opc.cpp:759] pvband before updating: 44333
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:49:18.917356 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:49:18.926751 10194 opc.cpp:1049] 204549 stepsize jumpped; 1013830 stepsize reduced.
+I1021 17:49:18.934818 10194 opc.cpp:384] Objective value before updating: 22624.5
+I1021 17:49:18.934864 10194 opc.cpp:385] EPE count: 9
+I1021 17:49:18.938831 10194 opc.cpp:398] maxg: 1.48827, ming: -0.773167
+I1021 17:49:18.950134 10194 opc.cpp:549] gradient mse: 0.0404237
+I1021 17:49:18.950167 10194 opc.cpp:366] Gradient search iteration 9
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 35399
+[DEBUG]:Total 7 EPE violations: 7 inner and 0 outer
+I1021 17:49:43.304334 10194 opc.cpp:759] pvband before updating: 45083
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:49:51.458424 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:49:51.465976 10194 opc.cpp:1049] 547889 stepsize jumpped; 756256 stepsize reduced.
+I1021 17:49:51.474385 10194 opc.cpp:384] Objective value before updating: 21987.5
+I1021 17:49:51.474444 10194 opc.cpp:385] EPE count: 7
+I1021 17:49:51.477819 10194 opc.cpp:398] maxg: 1.19271, ming: -0.58826
+I1021 17:49:51.489030 10194 opc.cpp:549] gradient mse: 0.0291289
+I1021 17:49:51.489068 10194 opc.cpp:366] Gradient search iteration 10
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 34747
+[DEBUG]:Total 7 EPE violations: 7 inner and 0 outer
+I1021 17:50:15.888597 10194 opc.cpp:759] pvband before updating: 45159
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:50:23.991466 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:50:24.000277 10194 opc.cpp:1049] 278937 stepsize jumpped; 1067110 stepsize reduced.
+I1021 17:50:24.006163 10194 opc.cpp:384] Objective value before updating: 21674.2
+I1021 17:50:24.006201 10194 opc.cpp:385] EPE count: 7
+I1021 17:50:24.009780 10194 opc.cpp:398] maxg: 1.67016, ming: -0.430838
+I1021 17:50:24.021340 10194 opc.cpp:549] gradient mse: 0.0230524
+I1021 17:50:24.021384 10194 opc.cpp:366] Gradient search iteration 11
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 33760
+[DEBUG]:Total 7 EPE violations: 7 inner and 0 outer
+I1021 17:50:48.402220 10194 opc.cpp:759] pvband before updating: 45575
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:50:56.529827 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:50:56.545454 10194 opc.cpp:1049] 330444 stepsize jumpped; 1074563 stepsize reduced.
+I1021 17:50:56.551772 10194 opc.cpp:384] Objective value before updating: 21337.6
+I1021 17:50:56.551820 10194 opc.cpp:385] EPE count: 7
+I1021 17:50:56.555136 10194 opc.cpp:398] maxg: 1.57801, ming: -0.391371
+I1021 17:50:56.565759 10194 opc.cpp:549] gradient mse: 0.0206164
+I1021 17:50:56.565793 10194 opc.cpp:366] Gradient search iteration 12
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 33623
+[DEBUG]:Total 8 EPE violations: 7 inner and 1 outer
+I1021 17:51:20.947193 10194 opc.cpp:759] pvband before updating: 45676
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:51:29.070456 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:51:29.077713 10194 opc.cpp:1049] 724734 stepsize jumpped; 683606 stepsize reduced.
+I1021 17:51:29.083819 10194 opc.cpp:384] Objective value before updating: 21270.4
+I1021 17:51:29.083858 10194 opc.cpp:385] EPE count: 8
+I1021 17:51:29.087232 10194 opc.cpp:398] maxg: 1.52378, ming: -0.392728
+I1021 17:51:29.099431 10194 opc.cpp:549] gradient mse: 0.0194805
+I1021 17:51:29.099488 10194 opc.cpp:366] Gradient search iteration 13
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 32982
+[DEBUG]:Total 9 EPE violations: 7 inner and 2 outer
+I1021 17:51:53.385469 10194 opc.cpp:759] pvband before updating: 46022
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:52:01.496809 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:52:01.505298 10194 opc.cpp:1049] 335087 stepsize jumpped; 1059845 stepsize reduced.
+I1021 17:52:01.511927 10194 opc.cpp:384] Objective value before updating: 21085
+I1021 17:52:01.511970 10194 opc.cpp:385] EPE count: 9
+I1021 17:52:01.515926 10194 opc.cpp:398] maxg: 1.26367, ming: -0.399335
+I1021 17:52:01.526726 10194 opc.cpp:549] gradient mse: 0.0174326
+I1021 17:52:01.526770 10194 opc.cpp:366] Gradient search iteration 14
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 32998
+[DEBUG]:Total 9 EPE violations: 7 inner and 2 outer
+I1021 17:52:26.203029 10194 opc.cpp:759] pvband before updating: 46159
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:52:34.312204 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:52:34.320489 10194 opc.cpp:1049] 332156 stepsize jumpped; 1060778 stepsize reduced.
+I1021 17:52:34.326745 10194 opc.cpp:384] Objective value before updating: 21106
+I1021 17:52:34.326782 10194 opc.cpp:385] EPE count: 9
+I1021 17:52:34.330327 10194 opc.cpp:398] maxg: 1.15691, ming: -0.338448
+I1021 17:52:34.341958 10194 opc.cpp:549] gradient mse: 0.0160959
+I1021 17:52:34.342002 10194 opc.cpp:366] Gradient search iteration 15
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 32684
+[DEBUG]:Total 9 EPE violations: 7 inner and 2 outer
+I1021 17:52:58.604380 10194 opc.cpp:759] pvband before updating: 46310
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+Now convolving with kernel 0 weight 1.000000
+I1021 17:53:06.746018 10194 opc.cpp:837] Done calculate gradient.
+I1021 17:53:06.753330 10194 opc.cpp:1049] 709473 stepsize jumpped; 710221 stepsize reduced.
+I1021 17:53:06.759542 10194 opc.cpp:384] Objective value before updating: 21017.7
+I1021 17:53:06.759582 10194 opc.cpp:385] EPE count: 9
+I1021 17:53:06.763548 10194 opc.cpp:398] maxg: 1.04622, ming: -0.353703
+I1021 17:53:06.773948 10194 opc.cpp:549] gradient mse: 0.014824
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+*Message*: Done computing image
+l2loss: 32713
+[DEBUG]:Total 9 EPE violations: 7 inner and 2 outer
+I1021 17:53:30.912964 10194 opc.cpp:469] Final objective value: 21018.5
+I1021 17:53:30.913102 10194 opc.cpp:1205] Restore previous best solution
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+Now convolving with kernel 15 weight 1.010004
+Now convolving with kernel 16 weight 0.991770
+Now convolving with kernel 17 weight 0.941917
+Now convolving with kernel 18 weight 0.941153
+Now convolving with kernel 19 weight 0.787160
+Now convolving with kernel 20 weight 0.565007
+Now convolving with kernel 21 weight 0.564228
+Now convolving with kernel 22 weight 0.490721
+Now convolving with kernel 23 weight 0.448742
+*Message*: Done computing image
+Now convolving with kernel 0 weight 83.156715
+Now convolving with kernel 1 weight 34.974804
+Now convolving with kernel 2 weight 34.963085
+Now convolving with kernel 3 weight 14.879087
+Now convolving with kernel 4 weight 11.032078
+Now convolving with kernel 5 weight 4.448975
+Now convolving with kernel 6 weight 4.447021
+Now convolving with kernel 7 weight 2.218136
+Now convolving with kernel 8 weight 1.612225
+Now convolving with kernel 9 weight 1.538630
+Now convolving with kernel 10 weight 1.406106
+Now convolving with kernel 11 weight 1.363298
+Now convolving with kernel 12 weight 1.356663
+Now convolving with kernel 13 weight 1.119907
+Now convolving with kernel 14 weight 1.119321
+Now convolving with kernel 15 weight 1.097257
+Now convolving with kernel 16 weight 0.951011
+Now convolving with kernel 17 weight 0.950398
+Now convolving with kernel 18 weight 0.828199
+Now convolving with kernel 19 weight 0.810574
+Now convolving with kernel 20 weight 0.573675
+Now convolving with kernel 21 weight 0.571789
+Now convolving with kernel 22 weight 0.485302
+Now convolving with kernel 23 weight 0.472674
+*Message*: Done computing image
+Now convolving with kernel 0 weight 86.943428
+Now convolving with kernel 1 weight 35.417973
+Now convolving with kernel 2 weight 35.407127
+Now convolving with kernel 3 weight 14.170837
+Now convolving with kernel 4 weight 11.240212
+Now convolving with kernel 5 weight 4.143778
+Now convolving with kernel 6 weight 4.142495
+Now convolving with kernel 7 weight 1.910848
+Now convolving with kernel 8 weight 1.716264
+Now convolving with kernel 9 weight 1.584437
+Now convolving with kernel 10 weight 1.505652
+Now convolving with kernel 11 weight 1.500406
+Now convolving with kernel 12 weight 1.466139
+Now convolving with kernel 13 weight 1.149518
+Now convolving with kernel 14 weight 1.149352
+Now convolving with kernel 15 weight 1.010004
+Now convolving with kernel 16 weight 0.991770
+Now convolving with kernel 17 weight 0.941917
+Now convolving with kernel 18 weight 0.941153
+Now convolving with kernel 19 weight 0.787160
+Now convolving with kernel 20 weight 0.565007
+Now convolving with kernel 21 weight 0.564228
+Now convolving with kernel 22 weight 0.490721
+Now convolving with kernel 23 weight 0.448742
+*Message*: Done computing image
+l2loss: 29934
+First pass counting
+Found level M1
+1 layers parsed
+Level M1 (0) count = 10
+Second pass filling
+Found level M1
+Adjusted bounding box   (    0,0) -> (864,1018)
+[DEBUG]:Total 7 EPE violations: 7 inner and 0 outer
+I1021 17:54:09.033950 10194 opc.cpp:530] Final objective value: 21213.8
+I1021 17:54:09.034507 10194 opc.cpp:127] Done OPC
+[DEBUG]:==============System statistics==============
+[DEBUG]:Runtime: 552.778381 sec
+[DEBUG]:Pvband: 45899 nm^2
+[DEBUG]:#EPE violations of nominal image: 7
+[DEBUG]:Score (single CPU): 35552.777344
+[DEBUG]:=============================================
+*Message*: Removed kernel and design data
+(base) ➜  cuilt

@@ -59,16 +59,16 @@ class GradientBlock(nn.Module):
         logger.debug("epe before gradient descent in iteration {} : {}".format(num_iteration, epe_convergence))
         # end = time.time()
         # print("epe check time", end-start)
-        # nominal_bmask = torch.zeros(image[2].size(), dtype=torch.float64).to(device)
-        # nominal_bmask[image[2] > TARGET_INTENSITY] = 1
+        nominal_bmask = torch.zeros(image[2].size(), dtype=torch.float64).to(device)
+        nominal_bmask[image[2] > TARGET_INTENSITY] = 1
         image[0] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[0] - TARGET_INTENSITY))
         image[1] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[1] - TARGET_INTENSITY))
         image[2] = self.litho_sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[2] - TARGET_INTENSITY))
         criterion = nn.MSELoss(reduction="sum")
         loss = criterion(image[2], self.target_image)
         logger.debug("loss: {}".format(loss.item()))
-        # loss1 = criterion(nominal_bmask, self.target_image)
-        # logger.debug("int loss: {}".format(loss1.item()))
+        loss1 = criterion(nominal_bmask, self.target_image)
+        logger.debug("int loss: {}".format(loss1.item()))
         # m_term[0]: (Znom - Zt)^3 * Znom * (1-Znom)
         term[0] = torch.pow(image[2] - self.target_image, 3) * image[2] * (1 - image[2])
 
@@ -141,9 +141,9 @@ class GradientBlock(nn.Module):
         # gradient = mask * (1-mask) * gradient
         diff_target = image[2] - self.target_image
         diff_image = image[0] - image[1]
-        step_size = self.design.determine_step_size_backtrack(num_iteration, diff_target,
-                                                              diff_image, discrete_penalty)
-        # step_size = self.design.determine_const_step_size(num_iteration)
+        # step_size = self.design.determine_step_size_backtrack(num_iteration, diff_target,
+        #                                                       diff_image, discrete_penalty)
+        step_size = self.design.determine_const_step_size(num_iteration)
         self.design.update_convergence(diff_target, diff_image, discrete_penalty, epe_convergence, pvband)
         self.design.keep_best_result(mask)
         params[LITHOSIM_OFFSET:MASK_TILE_END_Y, LITHOSIM_OFFSET:MASK_TILE_END_X] -= \
@@ -184,15 +184,15 @@ def ilt(opc_kernels, design, update_block):
     epe_convergence = test_design.m_epe_checker.run(image[2])
     logger.debug("epe after the whole iterations : {}".format(epe_convergence))
     criterion = nn.MSELoss(reduction="sum")
-    # nominal_mask = torch.zeros(image[2].size(), dtype=torch.float64).to(device)
-    # nominal_mask[image[2] > TARGET_INTENSITY] = 1
+    nominal_mask = torch.zeros(image[2].size(), dtype=torch.float64).to(device)
+    nominal_mask[image[2] > TARGET_INTENSITY] = 1
     image[0] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[0] - TARGET_INTENSITY))
     image[1] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[1] - TARGET_INTENSITY))
     image[2] = torch.sigmoid(PHOTORISIST_SIGMOID_STEEPNESS * (image[2] - TARGET_INTENSITY))
     loss = criterion(image[2], test_design.m_target_image)
     logger.debug("loss after the whole iterations : {} ".format(loss))
-    # loss1 = criterion(nominal_mask, test_design.m_target_image)
-    # logger.debug("loss after the whole iterations : {} ".format(loss1))
+    loss1 = criterion(nominal_mask, test_design.m_target_image)
+    logger.debug("int loss after the whole iterations : {} ".format(loss1))
     discrete_penalty = WEIGHT_REGULARIZATION * (-8 * test_design.m_mask + 4)
     diff_target = image[2] - test_design.m_target_image
     diff_image = image[0] - image[1]
@@ -211,14 +211,19 @@ def draw_final(design, update_block):
                                                      opc_kernels["defocus"].scales, MIN_DOSE, 24)
     image[2] = update_block.simulator.simulate_image(design.bmask, opc_kernels["focus"].kernels,
                                                      opc_kernels["focus"].scales, NOMINAL_DOSE, 24)
-    plt.imshow(write_image_file(image[0], MAX_DOSE))
-    plt.savefig("outer_image_iter_final.png")
-    plt.clf()
-    plt.imshow(write_image_file(image[1], MIN_DOSE))
-    plt.savefig("inner_image_iter_final.png")
-    plt.clf()
-    plt.imshow(write_image_file(image[2], NOMINAL_DOSE))
-    plt.savefig("nominal_image_iter_final.png")
+    criterion = nn.MSELoss(reduction="sum")
+    nominal_mask = torch.zeros(image[2].size(), dtype=torch.float64).to(device)
+    nominal_mask[image[2] > TARGET_INTENSITY] = 1
+    loss1 = criterion(nominal_mask, design.m_target_image)
+    logger.debug("int loss (with 24 kernel) after the whole iterations : {} ".format(loss1))
+    # plt.imshow(write_image_file(image[0], MAX_DOSE))
+    # plt.savefig("outer_image_iter_final.png")
+    # plt.clf()
+    # plt.imshow(write_image_file(image[1], MIN_DOSE))
+    # plt.savefig("inner_image_iter_final.png")
+    # plt.clf()
+    # plt.imshow(write_image_file(image[2], NOMINAL_DOSE))
+    # plt.savefig("nominal_image_iter_final.png")
 
 if __name__ == "__main__":
     # logging setting
@@ -244,7 +249,7 @@ if __name__ == "__main__":
     # start = time.time()
     # for i in range(1, 11):
     i = 1
-    logger = get_logger(__name__, "experiment/case" + str(i) + ".txt")
+    logger = get_logger(__name__, "experiment/log4/case" + str(i) + ".txt")
     m1_test = Design("../benchmarks/M1_test" + str(i) + ".glp")
     test_design = OPC(m1_test, hammer=1, sraf=0)
     update_block = GradientBlock(opc_kernels, test_design)
@@ -255,7 +260,7 @@ if __name__ == "__main__":
     # end = time.time()
     # logger.info("ilt time {}".format(end - start))
     # # print("ilt time {}".format(end - start))
-    # draw_final(test_design, update_block)
+    draw_final(test_design, update_block)
     # print(end-start)
     # check_equal_image("/Users/zhubinwu/research/opc-hsd/cuilt/build/pixel_statistics.txt",nominal_image[:,:,2])
     # plt.imshow(write_image_file(image[0], MAX_DOSE))
